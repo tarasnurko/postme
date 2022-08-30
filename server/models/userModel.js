@@ -7,24 +7,19 @@ const userSchema = mongoose.Schema({
     unique: true,
     minlength: 6,
     maxlength: 20,
+    trim: true,
   },
   email: {
     type: String,
     required: [true, "Please provide your email"],
+    trim: true,
     unique: true,
     lovercase: true,
   },
   password: {
     type: String,
     required: true,
-  },
-  photo: {
-    type: String,
-    default: "",
-  },
-  description: {
-    type: String,
-    maxlength: 60,
+    select: false,
   },
   role: {
     type: String,
@@ -40,6 +35,17 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  photo: {
+    type: String,
+    default: "",
+  },
+  description: {
+    type: String,
+    maxlength: 60,
+  },
+  followers: [],
+  following: [],
+  posts: [],
 });
 
 userSchema.pre("save", async function (next) {
