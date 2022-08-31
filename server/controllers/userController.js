@@ -2,11 +2,12 @@ const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
+const filterObj = require("../utils/filterObj");
 
 const getUser = catchAsync(async (req, res, next) => {
-  const { userId } = req.params;
+  const { id } = req.params;
 
-  const user = await User.findOne({ _id: userId });
+  const user = await User.findById(id);
 
   if (!user) return next(new AppError("No user with this id", 400));
 
@@ -27,6 +28,42 @@ const getMe = catchAsync(async (req, res, next) => {
   });
 });
 
-const deleteMe = catchAsync(async (req, res, next) => {});
+const updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.password) {
+    return next(
+      new AppError(
+        "This route is not for password updates. Please use /updateMyPasswrd.",
+        400
+      )
+    );
+  }
 
-module.exports = { getUser, getMe, deleteMe };
+  const filteredBody = filterObj(req.body, "username", "photo", "description");
+
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: updatedUser,
+    },
+  });
+});
+
+const deleteMe = catchAsync(async (req, res, next) => {
+  const deletedUser = await User.findByIdAndDelete(req.user.id);
+
+  if (!deletedUser) {
+    return next(new AppError("No user found with that ID", 404));
+  }
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});
+
+module.exports = { getUser, getMe, updateMe, deleteMe };

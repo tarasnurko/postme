@@ -6,6 +6,10 @@ const postSchema = mongoose.Schema({
     required: [true, "Please provide title"],
     trim: true,
   },
+  description: {
+    type: String,
+    required: [true, "Please provide description"],
+  },
   preview: {
     type: String,
   },
@@ -33,6 +37,7 @@ const postSchema = mongoose.Schema({
   tags: [
     {
       type: String,
+      required: [true, "Please provide tags"],
       trim: true,
     },
   ],
@@ -44,4 +49,4 @@ const postSchema = mongoose.Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
-exports.module = Post;
+module.exports = Post;

@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const postRoutes = require("./routes/postRoutes");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(passport.session());
 app.use("/api/v1/healthcare", (req, res) => res.sendStatus(200));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/posts", postRoutes);
 
 app.use(errorHandler);
 
