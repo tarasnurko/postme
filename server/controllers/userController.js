@@ -60,6 +60,11 @@ const deleteMe = catchAsync(async (req, res, next) => {
     return next(new AppError("No user found with that ID", 404));
   }
 
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
   res.status(204).json({
     status: "success",
     data: null,

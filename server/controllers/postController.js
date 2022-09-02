@@ -94,4 +94,42 @@ const deletePost = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports = { getPost, createPost, updatePost, deletePost };
+const togglePostLike = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const post = await Post.findById(id);
+  const user = await User.findById(req.user.id);
+
+  if (!post) {
+    return next(new AppError("No post found with that ID", 404));
+  }
+
+  if (post.likedBy.includes(req.user.id)) {
+    const indexPost = post.likedBy.indexOf(req.user.id);
+    post.likedBy.splice(indexPost, 1);
+
+    const indexUser = user.likedPosts.indexOf(post);
+    user.likedPosts.splice(indexUser, 1);
+  } else {
+    post.likedBy.push(req.user.id);
+    user.likedPosts.push(post);
+  }
+
+  await post.save();
+  await user.save();
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: post,
+    },
+  });
+});
+
+module.exports = {
+  getPost,
+  createPost,
+  updatePost,
+  deletePost,
+  togglePostLike,
+};

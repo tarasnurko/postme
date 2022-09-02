@@ -1,9 +1,12 @@
 ## Todo
 
-[X] Add basic auth  
-[ ] Add user routes: get user account(videos, info), updateUser(protected), deleteUser(protected)  
-[ ] Add post routes: get posts, createPost(protected), deletePost(protected)  
-[X] Add comment routes: addComment(protected), deleteComment(protected)  
-[X] Add post model  
-[ ] Serach posts (by name, hashtags)  
-[ ] Add google auth
+[X] Add jwt auth  
+[ ] Add google auth  
+[X] Add auth routes (signup, login, logout)  
+[X] Add user routes (getMe, updateMe, deleteMe)  
+[X] Add user search  
+[X] Add post routes (getPost, createPost, deletePost)  
+[ ] Add post serach (topics, title, by user etc.)  
+[X] Add post, comment like toggling  
+[X] Add comment routes (addComment, updateComment, deleteComment)  
+[X] Add topics

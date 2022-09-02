@@ -74,4 +74,33 @@ const deleteComment = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports = { addComment, updateComment, deleteComment };
+const toggleCommentLike = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const comment = await Comment.findById(id);
+
+  if (!comment) {
+    return next(new AppError("No comment with that ID", 404));
+  }
+
+  if (comment.likedBy.includes(req.user.id)) {
+    const index = comment.likedBy.indexOf(req.user.id);
+    comment.likedBy.splice(index, 1);
+  } else {
+    comment.likedBy.push(req.user.id);
+  }
+
+  await comment.save();
+
+  res.status(200).json({
+    status: "success",
+    data: null,
+  });
+});
+
+module.exports = {
+  addComment,
+  updateComment,
+  deleteComment,
+  toggleCommentLike,
+};
