@@ -42,9 +42,24 @@ const userSchema = mongoose.Schema({
     type: String,
     maxlength: 60,
   },
-  followers: [],
-  following: [],
-  posts: [],
+  followers: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  following: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  posts: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Post",
+    },
+  ],
 });
 
 userSchema.pre("save", async function (next) {

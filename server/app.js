@@ -7,6 +7,7 @@ const cookieSession = require("cookie-session");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -35,6 +36,7 @@ app.use("/api/v1/healthcare", (req, res) => res.sendStatus(200));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/posts", postRoutes);
+app.use("/api/v1/comments", commentRoutes);
 
 app.use(errorHandler);
 

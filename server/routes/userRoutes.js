@@ -7,21 +7,12 @@ const {
   updateMe,
   deleteMe,
 } = require("../controllers/userController");
-const verifyJwt = require("../middleware/verifyJwt");
 
 const router = express.Router();
 
-// router.get(
-//   "/",
-//   passport.authenticate("jwt", { session: false }),
-//   (req, res) => {
-//     res.send("Work");
-//   }
-// );
-
 // router.get("/:id", getUser);
 
-router.use(passport.authenticate("jwt", { session: false }), verifyJwt);
+router.use(passport.authenticate("jwt", { session: false }));
 
 router.get("/me", getMe);
 router.patch("/updateMe", updateMe);

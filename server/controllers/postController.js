@@ -7,7 +7,7 @@ const filterObj = require("../utils/filterObj");
 
 const getPost = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const post = await Post.findById(id);
+  const post = await Post.findById(id).populate("user").populate("comments");
 
   if (!post) return next(new AppError("No post with that ID", 404));
 
