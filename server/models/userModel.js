@@ -1,71 +1,81 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const userSchema = mongoose.Schema({
-  username: {
-    type: String,
-    unique: true,
-    minlength: 6,
-    maxlength: 20,
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, "Please provide your email"],
-    trim: true,
-    unique: true,
-    lovercase: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    select: false,
-  },
-  role: {
-    type: String,
-    enum: ["user", "admin"],
-    default: "user",
-  },
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
-  photo: {
-    type: String,
-  },
-  description: {
-    type: String,
-    maxlength: 60,
-  },
-  followers: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
+const userSchema = mongoose.Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      minlength: 1,
+      maxlength: 20,
+      trim: true,
     },
-  ],
-  following: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
+    email: {
+      type: String,
+      required: [true, "Please provide your email"],
+      trim: true,
+      unique: true,
+      lovercase: true,
     },
-  ],
-  posts: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Post",
+    password: {
+      type: String,
+      required: true,
+      select: false,
     },
-  ],
-  likedPosts: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
-  ],
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+    },
+    photo: {
+      type: String,
+    },
+    description: {
+      type: String,
+      maxlength: 60,
+    },
+    followers: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
+    followings: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
+    likedPosts: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  {
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: {
+      virtuals: true,
+    },
+  }
+);
+
+userSchema.virtual("posts", {
+  ref: "Post",
+  foreignField: "user",
+  localField: "_id",
 });
 
 userSchema.pre("save", async function (next) {

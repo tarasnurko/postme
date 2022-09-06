@@ -71,4 +71,38 @@ const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports = { getUser, getMe, updateMe, deleteMe };
+const toggleFollowing = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const userFollowTo = await User.findById(id);
+  const currentUser = await User.findById(req.user.id);
+
+  if (!userFollowTo) {
+    return next(new AppError("No user with that ID", 404));
+  }
+
+  if (req.user.id === id) {
+    return next(new AppError("You can not to follow yourself", 403));
+  }
+
+  if (currentUser.followings.includes(id)) {
+    const index = currentUser.followings.indexOf(id);
+    currentUser.followings.splice(index, 1);
+
+    const followerIndex = userFollowTo.followers.indexOf(req.user.id);
+    userFollowTo.followers.splice(followerIndex, 1);
+  } else {
+    currentUser.followings.push(id);
+    userFollowTo.followers.push(req.user.id);
+  }
+
+  await currentUser.save();
+  await userFollowTo.save();
+
+  res.status(200).json({
+    status: "success",
+    data: null,
+  });
+});
+
+module.exports = { getUser, getMe, updateMe, deleteMe, toggleFollowing };
