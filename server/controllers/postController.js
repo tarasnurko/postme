@@ -5,6 +5,39 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const filterObj = require("../utils/filterObj");
 
+const getLatestPosts = catchAsync(async (req, res, next) => {
+  const posts = await Post.find().sort({ createdAt: -1 }).limit(10);
+
+  if (!posts.length) {
+    return next(new AppError("No latest posts found", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: posts,
+    },
+  });
+});
+
+const getMostLikedPosts = catchAsync(async (req, res, next) => {
+  const posts = await Post.aggregate()
+    .addFields({ length: { $size: `$likedBy` } })
+    .sort({ length: -1 })
+    .limit(10);
+
+  if (!posts.length) {
+    return next(new AppError("No latest posts found", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: posts,
+    },
+  });
+});
+
 const getPost = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const post = await Post.findById(id).populate("user").populate("comments");
@@ -104,6 +137,9 @@ const togglePostLike = catchAsync(async (req, res, next) => {
     return next(new AppError("No post found with that ID", 404));
   }
 
+  console.log(post.likedBy);
+  console.log(req.user.id);
+
   if (post.likedBy.includes(req.user.id)) {
     const indexPost = post.likedBy.indexOf(req.user.id);
     post.likedBy.splice(indexPost, 1);
@@ -132,4 +168,6 @@ module.exports = {
   updatePost,
   deletePost,
   togglePostLike,
+  getLatestPosts,
+  getMostLikedPosts,
 };

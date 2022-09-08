@@ -7,11 +7,16 @@ const {
   updatePost,
   deletePost,
   togglePostLike,
+  getLatestPosts,
+  getMostLikedPosts,
 } = require("../controllers/postController");
 
 const router = express.Router();
 
 // router.get('/:id')
+
+router.get("/latest", getLatestPosts);
+router.get("/mostLiked", getMostLikedPosts);
 
 router.use(passport.authenticate("jwt", { session: false }));
 
