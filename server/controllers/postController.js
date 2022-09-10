@@ -1,16 +1,34 @@
-const { findByIdAndUpdate } = require("../models/postModel");
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const filterObj = require("../utils/filterObj");
 
-const getLatestPosts = catchAsync(async (req, res, next) => {
-  const posts = await Post.find().sort({ createdAt: -1 }).limit(10);
+const getAllPosts = catchAsync(async (req, res, next) => {
+  let searchObj = {};
 
-  if (!posts.length) {
-    return next(new AppError("No latest posts found", 404));
+  if (req.query.search) {
+    searchObj = {
+      $or: [
+        { title: { $regex: req.query.search, $options: "i" } },
+        { description: { $regex: req.query.search, $options: "i" } },
+        { tags: { $in: [req.query.search] } },
+      ],
+    };
   }
+
+  const sort =
+    req.query.sort === "asc"
+      ? "createdAt"
+      : req.query.sort === "desc"
+      ? "-createdAt"
+      : "";
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const posts = await Post.find(searchObj).sort(sort).skip(skip).limit(limit);
 
   res.status(200).json({
     status: "success",
@@ -20,15 +38,22 @@ const getLatestPosts = catchAsync(async (req, res, next) => {
   });
 });
 
-const getMostLikedPosts = catchAsync(async (req, res, next) => {
+const getLatestPosts = catchAsync(async (req, res) => {
+  const posts = await Post.find().sort({ createdAt: -1 }).limit(10);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: posts,
+    },
+  });
+});
+
+const getMostLikedPosts = catchAsync(async (req, res) => {
   const posts = await Post.aggregate()
     .addFields({ length: { $size: `$likedBy` } })
     .sort({ length: -1 })
     .limit(10);
-
-  if (!posts.length) {
-    return next(new AppError("No latest posts found", 404));
-  }
 
   res.status(200).json({
     status: "success",
@@ -163,6 +188,7 @@ const togglePostLike = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
+  getAllPosts,
   getPost,
   createPost,
   updatePost,

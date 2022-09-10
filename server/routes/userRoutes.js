@@ -2,7 +2,8 @@ const express = require("express");
 const passport = require("passport");
 
 const {
-  getUser,
+  findUser,
+  getUserData,
   getMe,
   updateMe,
   deleteMe,
@@ -11,7 +12,8 @@ const {
 
 const router = express.Router();
 
-// router.get("/:id", getUser);
+router.get("/find", findUser);
+router.get("/info", getUserData);
 
 router.use(passport.authenticate("jwt", { session: false }));
 

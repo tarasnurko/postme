@@ -2,6 +2,7 @@ const express = require("express");
 const passport = require("passport");
 
 const {
+  getAllPosts,
   getPost,
   createPost,
   updatePost,
@@ -14,6 +15,7 @@ const {
 const router = express.Router();
 
 // router.get('/:id')
+router.get("/", getAllPosts);
 
 router.get("/latest", getLatestPosts);
 router.get("/mostLiked", getMostLikedPosts);

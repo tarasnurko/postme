@@ -21,8 +21,6 @@ passport.use(
     async function (jwtPayload, done) {
       const user = await User.findById(jwtPayload.id);
 
-      console.log(jwtPayload.id, user);
-
       return done(null, user);
     }
   )

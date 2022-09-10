@@ -4,12 +4,59 @@ const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
 const filterObj = require("../utils/filterObj");
 
-const getUser = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
+const findUser = catchAsync(async (req, res) => {
+  let searchObj = {};
 
-  const user = await User.findById(id);
+  if (req.query.search) {
+    searchObj = {
+      username: { $regex: req.query.search, $options: "i" },
+    };
+  }
 
-  if (!user) return next(new AppError("No user with this id", 400));
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const users = await User.find(searchObj).skip(skip).limit(limit);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: users,
+    },
+  });
+});
+
+const getUserData = catchAsync(async (req, res, next) => {
+  const { id, data } = req.query;
+  let user;
+
+  if (!data) {
+    return next(new AppError("Please specify user data", 404));
+  }
+
+  switch (data) {
+    case "followings":
+    case "followers":
+      user = await User.findById(id).select(data).populate({
+        path: data,
+        model: "User",
+        select: "username photo",
+      });
+      break;
+    case "likedPosts":
+    case "posts":
+      user = await User.findById(id).select(data).populate({
+        path: data,
+        model: "Post",
+        select: "title description preview",
+      });
+      break;
+  }
+
+  if (!user) {
+    return next(new AppError("No user found with that ID", 404));
+  }
 
   res.status(200).json({
     status: "success",
@@ -105,4 +152,11 @@ const toggleFollowing = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports = { getUser, getMe, updateMe, deleteMe, toggleFollowing };
+module.exports = {
+  findUser,
+  getUserData,
+  getMe,
+  updateMe,
+  deleteMe,
+  toggleFollowing,
+};
