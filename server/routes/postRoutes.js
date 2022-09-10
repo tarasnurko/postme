@@ -14,20 +14,19 @@ const {
 
 const router = express.Router();
 
-// router.get('/:id')
 router.get("/", getAllPosts);
 
 router.get("/latest", getLatestPosts);
 router.get("/mostLiked", getMostLikedPosts);
 
+router.get("/:id", getPost);
+
 router.use(passport.authenticate("jwt", { session: false }));
 
 router.post("/", createPost);
-
 router.patch("/:id", updatePost);
 router.delete("/:id", deletePost);
 
-router.get("/:id", getPost);
 router.get("/toggleLike/:id", togglePostLike);
 
 module.exports = router;
