@@ -18,3 +18,12 @@
 [ ] Install necessery packages (cors, helmet, etc...)
 
 ### Frontend
+
+[ ] Create Header  
+[ ] Create Footer  
+[ ] Create Login, Register page  
+[ ] Create Main page (last posts, popular posts, followed user last posts, most popular tags popular posts)
+[ ] Create Read Post page  
+[ ] Create Create Post page  
+[ ] Create Account page  
+[ ] Create Search page

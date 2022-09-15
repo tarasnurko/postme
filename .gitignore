@@ -1,4 +1,4 @@
 node_modules
 package-lock.json
 config.env
-users.json
+client/build
