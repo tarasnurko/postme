@@ -61,6 +61,12 @@ const userSchema = mongoose.Schema(
         ref: "User",
       },
     ],
+    posts: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     toObject: {
@@ -71,12 +77,6 @@ const userSchema = mongoose.Schema(
     },
   }
 );
-
-userSchema.virtual("posts", {
-  ref: "Post",
-  foreignField: "user",
-  localField: "_id",
-});
 
 userSchema.pre("save", async function (next) {
   //Only run this function if password was actually modified

@@ -1,5 +1,6 @@
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
+const { ObjectId } = require("mongoose").Types;
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const filterObj = require("../utils/filterObj");
@@ -28,7 +29,11 @@ const getAllPosts = catchAsync(async (req, res, next) => {
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const posts = await Post.find(searchObj).sort(sort).skip(skip).limit(limit);
+  const posts = await Post.find(searchObj)
+    .populate("user")
+    .sort(sort)
+    .skip(skip)
+    .limit(limit);
 
   res.status(200).json({
     status: "success",
@@ -39,7 +44,12 @@ const getAllPosts = catchAsync(async (req, res, next) => {
 });
 
 const getLatestPosts = catchAsync(async (req, res) => {
-  const posts = await Post.find().sort({ createdAt: -1 }).limit(10);
+  const limit = parseInt(req.query.limit) || 10;
+
+  const posts = await Post.find()
+    .populate("user")
+    .sort({ createdAt: -1 })
+    .limit(limit);
 
   res.status(200).json({
     status: "success",
@@ -50,10 +60,94 @@ const getLatestPosts = catchAsync(async (req, res) => {
 });
 
 const getMostLikedPosts = catchAsync(async (req, res) => {
+  const limit = parseInt(req.query.limit) || 10;
+
   const posts = await Post.aggregate()
-    .addFields({ length: { $size: `$likedBy` } })
+    .addFields({ length: { $size: "$likedBy" } })
+    .lookup({
+      from: "users",
+      localField: "user",
+      foreignField: "_id",
+      as: "user",
+    })
     .sort({ length: -1 })
-    .limit(10);
+    .limit(limit);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: posts,
+    },
+  });
+});
+
+const getFollowingsPosts = catchAsync(async (req, res, next) => {
+  const limit = parseInt(req.query.limit) || 10;
+
+  const posts = await User.aggregate([
+    { $match: { _id: ObjectId(req.user.id) } },
+    {
+      $lookup: {
+        from: "users",
+        localField: "followings",
+        foreignField: "_id",
+        as: "followings",
+      },
+    },
+    {
+      $unwind: {
+        path: "$followings",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "posts",
+        localField: "followings.posts",
+        foreignField: "_id",
+        as: "followings.posts",
+      },
+    },
+    {
+      $unwind: {
+        path: "$followings.posts",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $group: {
+        _id: "$followings.posts._id",
+        title: { $first: "$followings.posts.title" },
+        description: { $first: "$followings.posts.description" },
+        preview: { $first: "$followings.posts.preview" },
+        content: { $first: "$followings.posts.content" },
+        likedBy: { $first: "$followings.posts.likedBy" },
+        tags: { $first: "$followings.posts.tags" },
+        createdAt: { $first: "$followings.posts.createdAt" },
+        user: { $first: "$followings._id" },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: {
+        path: "$user",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $sort: { createdAt: -1 },
+    },
+    {
+      $limit: limit,
+    },
+  ]);
 
   res.status(200).json({
     status: "success",
@@ -80,6 +174,10 @@ const getPost = catchAsync(async (req, res, next) => {
 const createPost = catchAsync(async (req, res, next) => {
   const { title, description, preview, content, tags } = req.body;
 
+  const user = await User.findById(req.user.id);
+
+  if (!user) return next(new AppError("No user with that ID", 404));
+
   const post = await Post.create({
     title,
     description,
@@ -88,6 +186,10 @@ const createPost = catchAsync(async (req, res, next) => {
     tags,
     user: req.user.id,
   });
+
+  user.posts.push(req.user.id);
+
+  await user.save();
 
   res.status(201).json({
     status: "success",
@@ -136,15 +238,22 @@ const deletePost = catchAsync(async (req, res, next) => {
 
   const post = await Post.findById(id);
 
+  const user = await User.findById(req.user.id);
+
+  if (!user) return next(new AppError("No user with that ID", 404));
+
   if (!post) {
     return next(new AppError("No post found with that ID", 404));
   }
 
-  if (post.user != req.user.id) {
+  if (post.user != user) {
     return next(new AppError("You do not have permissions to do this", 403));
   }
 
   await post.remove();
+
+  user.posts.splice(user.posts.indexOf(id), 1);
+  await user.save();
 
   res.status(204).json({
     status: "success",
@@ -196,4 +305,5 @@ module.exports = {
   togglePostLike,
   getLatestPosts,
   getMostLikedPosts,
+  getFollowingsPosts,
 };
