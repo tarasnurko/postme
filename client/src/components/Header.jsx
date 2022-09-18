@@ -10,10 +10,10 @@ import {
 
 const Header = () => {
   return (
-    <header className="w-screen sticky top-0 z-50 mx-auto h-[60px] bg-purple-100">
-      <div className="container mx-auto flex items-center h-full">
+    <header className="w-screen max-w-full mx-auto h-[60px] sticky top-0 z-50  bg-purple-100">
+      <div className="container mx-auto px-20 flex items-center h-full">
         <div className="font-jakarta text-2xl font-semibold">Postme</div>
-        <ul className="w-screen flex items-center justify-end gap-6 text-base font-medium">
+        <ul className="w-full flex items-center justify-end gap-6 text-base font-medium">
           <li>
             <Link to="/" className="flex items-center gap-2 hover:underline">
               <p>Main</p>

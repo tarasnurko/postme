@@ -37,9 +37,7 @@ const getAllPosts = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: posts,
-    },
+    data: posts,
   });
 });
 
@@ -53,9 +51,7 @@ const getLatestPosts = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: posts,
-    },
+    data: posts,
   });
 });
 
@@ -75,9 +71,7 @@ const getMostLikedPosts = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: posts,
-    },
+    data: posts,
   });
 });
 
@@ -151,9 +145,7 @@ const getFollowingsPosts = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: posts,
-    },
+    data: posts,
   });
 });
 
@@ -165,9 +157,7 @@ const getPost = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: post,
-    },
+    data: post,
   });
 });
 
@@ -193,9 +183,7 @@ const createPost = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      data: post,
-    },
+    data: post,
   });
 });
 
@@ -227,9 +215,7 @@ const updatePost = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: updatedPost,
-    },
+    data: updatedPost,
   });
 });
 
@@ -290,9 +276,7 @@ const togglePostLike = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: post,
-    },
+    data: post,
   });
 });
 

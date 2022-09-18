@@ -21,9 +21,7 @@ const findUser = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: users,
-    },
+    data: user,
   });
 });
 
@@ -60,18 +58,14 @@ const getUserData = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: user,
-    },
+    data: user,
   });
 });
 
 const getMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
-    data: {
-      data: req.user,
-    },
+    data: req.user,
   });
 });
 
@@ -94,9 +88,7 @@ const updateMe = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: updatedUser,
-    },
+    data: updatedUser,
   });
 });
 

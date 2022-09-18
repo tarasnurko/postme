@@ -1,12 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import Layout from "./components/Layout";
+import MainPage from "./pages/MainPage";
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/">
-        <Route index element={<Header />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<MainPage />} />
       </Route>
     </Routes>
   );

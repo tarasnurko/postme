@@ -21,8 +21,9 @@
 
 [ ] Create Header  
 [ ] Create Footer  
+[ ] Create Sidebar  
 [ ] Create Login, Register page  
-[ ] Create Main page (last posts, popular posts, followed user last posts, most popular tags popular posts)
+[ ] Create Main page (last posts, popular posts, followed user last posts)
 [ ] Create Read Post page  
 [ ] Create Create Post page  
 [ ] Create Account page  
