@@ -13,10 +13,10 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getLatestPosts: builder.query({
-      query: (limit) => `api/v1/posts/latest?limit=${limit}`,
+      query: (limit) => `posts/latest?limit=${limit}`,
     }),
     getMostLikedPosts: builder.query({
-      query: (limit) => `api/v1/posts/mostLiked?limit=${limit}`,
+      query: (limit) => `posts/mostLiked?limit=${limit}`,
     }),
   }),
 });
