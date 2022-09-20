@@ -18,6 +18,9 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     getMostLikedPosts: builder.query({
       query: (limit) => `posts/mostLiked?limit=${limit}`,
     }),
+    getPost: builder.query({
+      query: (id) => `posts/:${id}`,
+    }),
   }),
 });
 

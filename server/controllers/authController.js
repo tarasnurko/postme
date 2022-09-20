@@ -4,14 +4,23 @@ const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+const signToken = (username, role) => {
+  return jwt.sign(
+    {
+      UserInfo: {
+        username: username,
+        role: role,
+      },
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    }
+  );
 };
 
 const createAndSendToken = (user, statusCode, req, res) => {
-  const token = signToken(user._id);
+  const token = signToken(user.username, user.role);
 
   res.cookie("jwt", token, {
     expires: new Date(
@@ -23,7 +32,7 @@ const createAndSendToken = (user, statusCode, req, res) => {
 
   user.password = undefined;
 
-  res.status(statusCode).json({ status: "success", data: { user } });
+  res.status(statusCode).json({ status: "success", accessToken: token });
 };
 
 const signup = catchAsync(async (req, res, next) => {

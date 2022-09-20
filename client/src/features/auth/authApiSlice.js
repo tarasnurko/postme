@@ -30,15 +30,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    refresh: builder.query({
-      query: () => "auth/refresh",
-    }),
   }),
 });
 
-export const {
-  useSignupMutation,
-  useLoginMutation,
-  useSendLogoutQuery,
-  useRefreshQuery,
-} = authApiSlice;
+export const { useSignupMutation, useLoginMutation, useSendLogoutQuery } =
+  authApiSlice;

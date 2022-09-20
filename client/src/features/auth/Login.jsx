@@ -1,7 +1,48 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "./authApiSlice";
+import { setCredentials } from "./authSlice";
 
 const Login = () => {
+  const emailRef = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setErrMsg("");
+      const { accessToken } = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ accessToken }));
+      navigate("/");
+    } catch (err) {
+      if (!err.status) {
+        setErrMsg("No Server Response");
+      } else if (err.status === 400) {
+        setErrMsg("Missing Username or Password");
+      } else if (err.status === 401) {
+        setErrMsg("Unauthorized");
+      } else {
+        setErrMsg(err.data?.message);
+      }
+    }
+  };
+
+  const handleEmailInput = (e) => setEmail(e.target.value);
+  const handlePasswordInput = (e) => setPassword(e.target.value);
+
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-orange-300">
       <div className="w-[800px] h-[500px] flex rounded-2xl drop-shadow-lg bg-white">
@@ -10,20 +51,33 @@ const Login = () => {
           <div className="w-10 h-10 flex justify-center items-center border-2 border-neutral-800 rounded-full">
             G
           </div>
-          <form className="w-full px-5 flex flex-col items-center gap-4">
+          <form
+            className="w-full px-5 flex flex-col items-center gap-4"
+            onSubmit={handleSubmit}
+          >
             <input
+              ref={emailRef}
               type="text"
               name="email"
               placeholder="User Email"
+              required
               className="w-full px-4 py-2 bg-gray-200 rounded-md"
+              onChange={handleEmailInput}
             />
             <input
               type="password"
               name="password"
               placeholder="Password"
+              required
               className="w-full px-4 py-2 bg-gray-200 rounded-md"
+              onChange={handlePasswordInput}
             />
-            <button className="mt-4 px-5 py-1 text-lg text-white font-medium bg-emerald-400 rounded-lg">
+            {isLoading && <p>Loading</p>}
+            {errMsg && !isLoading && <p className="text-rose-600">{errMsg}</p>}
+            <button
+              className="px-5 py-1 text-lg text-white font-medium bg-emerald-400 rounded-lg"
+              disabled={isLoading}
+            >
               Login
             </button>
           </form>

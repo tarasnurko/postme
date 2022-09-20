@@ -20,7 +20,6 @@ const MainPage = () => {
       <Sidebar>
         <ArrowRightCircleIcon className="absolute top-4 left-4 w-8 h-8" />
         <div className="w-full h-full flex flex-col items-center mt-16 px-10 gap-5">
-          <p className="font-medium text-xl">My Posts</p>
           <div className="flex flex-col items-center gap-3">
             <p className="font-medium text-xl">Popular Topics</p>
             <div className="flex flex-wrap gap-2">
@@ -42,7 +41,7 @@ const MainPage = () => {
             </div>
           </div>
           <div className="flex flex-col items-center gap-4">
-            <p className="font-medium text-xl">Followings</p>
+            <p className="font-medium text-xl">Users</p>
             <div className="flex flex-col items-center gap-3">
               <div className="flex items-center justify-center gap-3">
                 <div className="w-12 h-12 bg-gray-700 rounded-full"></div>
@@ -66,7 +65,7 @@ const MainPage = () => {
                 </div>
               </div>
             </div>
-            <p className="font-medium text-base underline">More followings</p>
+            <p className="font-medium text-base underline">More users</p>
           </div>
         </div>
       </Sidebar>
