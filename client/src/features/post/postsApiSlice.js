@@ -14,8 +14,8 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     }),
     getLatestPosts: builder.query({
       query: (limit) => `posts/latest?limit=${limit}`,
-      transformResponse: (responceData) => {
-        const posts = responceData.data.map((post) => {
+      transformResponse: (responseData) => {
+        const posts = responseData.data.map((post) => {
           post.id = post._id;
           return post;
         });
@@ -24,8 +24,8 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     }),
     getMostLikedPosts: builder.query({
       query: (limit) => `posts/mostLiked?limit=${limit}`,
-      transformResponse: (responceData) => {
-        const posts = responceData.data.map((post) => {
+      transformResponse: (responseData) => {
+        const posts = responseData.data.map((post) => {
           post.id = post._id;
           return post;
         });
@@ -33,7 +33,14 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getPost: builder.query({
-      query: (id) => `posts/:${id}`,
+      query: (id) => `posts/${id}`,
+      transformResponse: (responseData) => {
+        const post = responseData.data;
+        post.id = post._id;
+
+        console.log(post);
+        return post;
+      },
     }),
   }),
 });
@@ -42,4 +49,5 @@ export const {
   useGetAllPostsQuery,
   useGetLatestPostsQuery,
   useGetMostLikedPostsQuery,
+  useGetPostQuery,
 } = postsApiSlice;

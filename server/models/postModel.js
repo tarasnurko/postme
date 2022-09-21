@@ -14,10 +14,17 @@ const postSchema = mongoose.Schema(
     preview: {
       type: String,
     },
-    content: {
-      type: String,
-      required: [true, "Please provide html content"],
-    },
+    content: [
+      {
+        type: {
+          type: String,
+          required: true,
+        },
+        content: String,
+        src: String,
+        alt: String,
+      },
+    ],
     user: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
