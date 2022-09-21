@@ -6,9 +6,10 @@ const PostList = (props) => {
     <div className="flex flex-col gap-12">
       <h2 className="font-semibold text-3xl">Most Liked Posts</h2>
       <div className="flex flex-col gap-8">
-        {props.posts.map((post, index) => (
+        {props.posts.map((post) => (
           <PostPreview
-            key={post._id}
+            id={post.id}
+            key={post.id}
             user={post.user.username}
             title={post.title}
             description={post.description}

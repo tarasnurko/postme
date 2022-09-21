@@ -14,9 +14,23 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     }),
     getLatestPosts: builder.query({
       query: (limit) => `posts/latest?limit=${limit}`,
+      transformResponse: (responceData) => {
+        const posts = responceData.data.map((post) => {
+          post.id = post._id;
+          return post;
+        });
+        return posts;
+      },
     }),
     getMostLikedPosts: builder.query({
       query: (limit) => `posts/mostLiked?limit=${limit}`,
+      transformResponse: (responceData) => {
+        const posts = responceData.data.map((post) => {
+          post.id = post._id;
+          return post;
+        });
+        return posts;
+      },
     }),
     getPost: builder.query({
       query: (id) => `posts/:${id}`,

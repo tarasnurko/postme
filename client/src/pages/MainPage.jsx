@@ -12,8 +12,7 @@ const MainPage = () => {
         <div className="w-[800px] ">
           <div className="flex flex-col mt-10 gap-14">
             <LatestPostsList />
-            <PopularPostsList />
-            {/* <FollowingsPostsList /> */}
+            {/* <PopularPostsList /> */}
           </div>
         </div>
       </section>
