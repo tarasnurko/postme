@@ -7,7 +7,7 @@ const PostPreview = (props) => {
       <div className="flex flex-col items-start gap-4">
         <div className="flex justify-start items-center gap-5">
           <Link to={`/users/${444}`} className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
+            <div className="shrink-0 w-10 h-10 bg-gray-700 rounded-full"></div>
             <p className="text-base">{props.user}</p>
           </Link>
           <div className="flex justify-start items-center gap-3">

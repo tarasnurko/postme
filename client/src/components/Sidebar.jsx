@@ -30,21 +30,21 @@ const Sidebar = (props) => {
           <p className="font-medium text-xl">Users</p>
           <div className="flex flex-col items-center gap-3">
             <div className="flex items-center justify-center gap-3">
-              <div className="w-12 h-12 bg-gray-700 rounded-full"></div>
+              <div className="shrink-0 w-12 h-12 bg-gray-700 rounded-full"></div>
               <div className="flex flex-col justify-center">
                 <p className="font-medium text-base">Username</p>
                 <p className="font-sm text-gray-600">200 followers</p>
               </div>
             </div>
             <div className="flex items-center justify-center gap-3">
-              <div className="w-12 h-12 bg-gray-700 rounded-full"></div>
+              <div className="shrink-0 w-12 h-12 bg-gray-700 rounded-full"></div>
               <div className="flex flex-col justify-center">
                 <p className="font-medium text-base">Username</p>
                 <p className="font-sm text-gray-600">200 followers</p>
               </div>
             </div>
             <div className="flex items-center justify-center gap-3">
-              <div className="w-12 h-12 bg-gray-700 rounded-full"></div>
+              <div className="shrink-0 w-12 h-12 bg-gray-700 rounded-full"></div>
               <div className="flex flex-col justify-center">
                 <p className="font-medium text-base">Username</p>
                 <p className="font-sm text-gray-600">200 followers</p>

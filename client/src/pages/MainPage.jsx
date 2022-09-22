@@ -4,8 +4,11 @@ import PopularPostsList from "../features/post/PopularPostsList";
 import LatestPostsList from "../features/post/LatestPostsList";
 import FollowingsPostsList from "../features/post/FollowingsPostsList";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
+import useAuth from "../hooks/useAuth";
 
 const MainPage = () => {
+  const a = useAuth();
+
   return (
     <>
       <section className="container mx-auto px-20">

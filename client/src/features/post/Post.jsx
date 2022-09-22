@@ -63,6 +63,68 @@ const Post = () => {
               <p className="text-sm font-medium">200</p>
             </div>
           </div>
+          <div className="flex flex-col gap-10">
+            <h2 className="font-semibold text-2xl">Comments</h2>
+            <div className="flex flex-col gap-10">
+              <div className="flex gap-5">
+                <div className="shrink-0 w-20 h-20 bg-gray-700 rounded-full"></div>
+                <div className="flex flex-col gap-2">
+                  <p className="text-xl font-medium">Username</p>
+                  <p className="text-base">
+                    There are many variations of passages of Lorem Ipsum
+                    available, but the majority have suffered alteration in some
+                    form, by injected humour, or randomised words which There
+                    are many variations of passages of Lorem Ipsum available,
+                  </p>
+                  <div className="mt-2 flex items-center gap-5">
+                    <div className="flex items-center gap-2 cursor-pointer">
+                      <HandThumbUpIcon className="w-6 h-6" />
+                      <p className="text-sm font-medium">200</p>
+                    </div>
+                    <p className="text-xs text-zinc-400">2 Month ago</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-5">
+                <div className="shrink-0 w-20 h-20 bg-gray-700 rounded-full"></div>
+                <div className="flex flex-col gap-2">
+                  <p className="text-xl font-medium">Username</p>
+                  <p className="text-base">
+                    There are many variations of passages of Lorem Ipsum
+                    available, but the majority have suffered alteration in some
+                    form, by injected humour, or randomised words which There
+                    are many variations of passages of Lorem Ipsum available,
+                  </p>
+                  <div className="mt-2 flex items-center gap-5">
+                    <div className="flex items-center gap-2 cursor-pointer">
+                      <HandThumbUpIcon className="w-6 h-6" />
+                      <p className="text-sm font-medium">200</p>
+                    </div>
+                    <p className="text-xs text-zinc-400">2 Month ago</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-5">
+                <div className="shrink-0 w-20 h-20 bg-gray-700 rounded-full"></div>
+                <div className="flex flex-col gap-2">
+                  <p className="text-xl font-medium">Username</p>
+                  <p className="text-base">
+                    There are many variations of passages of Lorem Ipsum
+                    available, but the majority have suffered alteration in some
+                    form, by injected humour, or randomised words which There
+                    are many variations of passages of Lorem Ipsum available,
+                  </p>
+                  <div className="mt-2 flex items-center gap-5">
+                    <div className="flex items-center gap-2 cursor-pointer">
+                      <HandThumbUpIcon className="w-6 h-6" />
+                      <p className="text-sm font-medium">200</p>
+                    </div>
+                    <p className="text-xs text-zinc-400">2 Month ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <Sidebar />
@@ -71,121 +133,3 @@ const Post = () => {
 };
 
 export default Post;
-
-{
-  /* <h2 className="font-semibold text-2xl">
-                Subtitle subtitle subtitle
-              </h2>
-              <p className="text-lg">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old. Richard McClintock, a
-                Latin professor at Hampden-Sydney College in Virginia, looked up
-                one of the more obscure Latin words, consectetur, from a Lorem
-                Ipsum passage, and going through the cites of the word in
-                classical literature, discovered the undoubtable source.
-              </p>
-              <p className="text-lg">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old. Richard McClintock, a
-                Latin professor at Hampden-Sydney College in Virginia, looked up
-                one of the more obscure Latin words, consectetur, from a Lorem
-                Ipsum passage, and going through the cites of the word in
-                classical literature, discovered the undoubtable source.
-              </p>
-              <div className="my-5 flex flex-col items-center gap-2">
-                <img
-                  className="max-w-full max-h-[300px] object-cover"
-                  src="https://images.pexels.com/photos/76971/fighter-jet-fighter-aircraft-f-16-falcon-aircraft-76971.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                  alt="There are many variations"
-                />
-                <p className="text-xs text-gray-500">
-                  There are many variations
-                </p>
-              </div>
-              <h2 className="font-semibold text-2xl">
-                Many desktop publishing packages and web page
-              </h2>
-              <p className="text-lg">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old. Richard McClintock, a
-                Latin professor at Hampden-Sydney College in Virginia, looked up
-                one of the more obscure Latin words, consectetur, from a Lorem
-                Ipsum passage, and going through the cites of the word in
-                classical literature, discovered the undoubtable source.
-              </p>
-              <p className="text-lg">
-                <b>Contrary</b> to popular belief, Lorem Ipsum is not simply
-                random text. It has roots in a piece of classical Latin
-                literature from 45 BC, making it over 2000 years old. Richard
-                McClintock, a Latin professor at Hampden-Sydney College in
-                Virginia, looked up one of the more obscure Latin words,
-                consectetur, from a Lorem Ipsum passage, and going through the
-                cites of the word in classical literature, discovered the
-                undoubtable source.
-              </p> */
-}
-
-{
-  /* <div className="flex flex-col gap-5">
-
-                <h2 className="font-semibold text-2xl">
-                  Subtitle subtitle subtitle
-                </h2>
-                <p className="text-lg">
-                  Contrary to popular belief, Lorem Ipsum is not simply random
-                  text. It has roots in a piece of classical Latin literature
-                  from 45 BC, making it over 2000 years old. Richard McClintock,
-                  a Latin professor at Hampden-Sydney College in Virginia,
-                  looked up one of the more obscure Latin words, consectetur,
-                  from a Lorem Ipsum passage, and going through the cites of the
-                  word in classical literature, discovered the undoubtable
-                  source.
-                </p>
-                <p className="text-lg">
-                  Contrary to popular belief, Lorem Ipsum is not simply random
-                  text. It has roots in a piece of classical Latin literature
-                  from 45 BC, making it over 2000 years old. Richard McClintock,
-                  a Latin professor at Hampden-Sydney College in Virginia,
-                  looked up one of the more obscure Latin words, consectetur,
-                  from a Lorem Ipsum passage, and going through the cites of the
-                  word in classical literature, discovered the undoubtable
-                  source.
-                </p>
-                <div className="my-5 flex flex-col items-center gap-2">
-                  <img
-                    className="max-w-full max-h-[300px] object-cover"
-                    src="https://images.pexels.com/photos/76971/fighter-jet-fighter-aircraft-f-16-falcon-aircraft-76971.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    alt="There are many variations"
-                  />
-                  <p className="text-xs text-gray-500">
-                    There are many variations
-                  </p>
-                </div>
-                <h2 className="font-semibold text-2xl">
-                  Many desktop publishing packages and web page
-                </h2>
-                <p className="text-lg">
-                  Contrary to popular belief, Lorem Ipsum is not simply random
-                  text. It has roots in a piece of classical Latin literature
-                  from 45 BC, making it over 2000 years old. Richard McClintock,
-                  a Latin professor at Hampden-Sydney College in Virginia,
-                  looked up one of the more obscure Latin words, consectetur,
-                  from a Lorem Ipsum passage, and going through the cites of the
-                  word in classical literature, discovered the undoubtable
-                  source.
-                </p>
-                <p className="text-lg">
-                  <b>Contrary</b> to popular belief, Lorem Ipsum is not simply
-                  random text. It has roots in a piece of classical Latin
-                  literature from 45 BC, making it over 2000 years old. Richard
-                  McClintock, a Latin professor at Hampden-Sydney College in
-                  Virginia, looked up one of the more obscure Latin words,
-                  consectetur, from a Lorem Ipsum passage, and going through the
-                  cites of the word in classical literature, discovered the
-                  undoubtable source.
-                </p>
-              </div> */
-}

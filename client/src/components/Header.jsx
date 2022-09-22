@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   MagnifyingGlassIcon,
@@ -11,7 +11,7 @@ import {
 import useAuth from "../hooks/useAuth";
 
 const Header = () => {
-  const { username } = useAuth();
+  const { isAuthorized, userId, username } = useAuth();
 
   return (
     <header className="w-screen max-w-full mx-auto h-[60px] sticky top-0 z-50  bg-purple-100">
@@ -40,7 +40,7 @@ const Header = () => {
           </li>
 
           <li>
-            {username == null ? (
+            {isAuthorized == null ? (
               <Link
                 to="/login"
                 className="flex items-center gap-2 px-5 py-1 bg-blue-600 text-white rounded-lg transition ease-in-out bg duration-700 hover:bg-blue-800"
@@ -49,7 +49,10 @@ const Header = () => {
                 <LockClosedIcon className="w-6 h-6" />
               </Link>
             ) : (
-              <Link to="/" className="flex items-center gap-2 hover:underline">
+              <Link
+                to={`users/${userId}`}
+                className="flex items-center gap-2 hover:underline"
+              >
                 <p>{username}</p>
                 <UserCircleIcon className="w-6 h-6" />
               </Link>

@@ -4,15 +4,17 @@ import jwtDecode from "jwt-decode";
 
 const useAuth = () => {
   const token = useSelector(selectCurrentToken);
+  let isAuthorized = false;
+  let userId = null;
+  let username = null;
+  let role = null;
 
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    console.log(decodedToken);
-    const { username, role } = decodedToken.UserInfo;
-
-    return { username, role };
+  if (token != null) {
+    ({ id: userId, username, role } = jwtDecode(token));
+    isAuthorized = true;
   }
-  return { username: null, role: null };
+
+  return { isAuthorized, userId, username, role };
 };
 
 export default useAuth;

@@ -4,29 +4,20 @@ const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-const signToken = (username, role) => {
-  return jwt.sign(
-    {
-      UserInfo: {
-        username: username,
-        role: role,
-      },
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    }
-  );
+const signToken = (id, username, role) => {
+  return jwt.sign({ id, username, role }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
 };
 
 const createAndSendToken = (user, statusCode, req, res) => {
-  const token = signToken(user.username, user.role);
+  const token = signToken(user._id, user.username, user.role);
 
   res.cookie("jwt", token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
+    httpOnly: false,
     secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   });
 
