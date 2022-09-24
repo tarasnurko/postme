@@ -7,8 +7,6 @@ import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import useAuth from "../hooks/useAuth";
 
 const MainPage = () => {
-  const a = useAuth();
-
   return (
     <>
       <section className="container mx-auto px-20">

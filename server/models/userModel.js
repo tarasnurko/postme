@@ -38,6 +38,11 @@ const userSchema = mongoose.Schema(
     },
     photo: {
       type: String,
+      default:
+        "https://i.pinimg.com/564x/27/01/f5/2701f51da94a8f339b2149ca5d15d2a5.jpg",
+    },
+    banner: {
+      type: String,
     },
     description: {
       type: String,

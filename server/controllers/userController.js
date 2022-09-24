@@ -21,7 +21,7 @@ const findUser = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: "success",
-    data: user,
+    data: users,
   });
 });
 
@@ -43,11 +43,23 @@ const getUserData = catchAsync(async (req, res, next) => {
       });
       break;
     case "likedPosts":
+      user = await User.findById(id)
+        .select(data)
+        .populate({
+          path: data,
+          populate: {
+            path: "user",
+            select: "username",
+          },
+          model: "Post",
+          select: "title description preview tags createdAt",
+        });
+      break;
     case "posts":
       user = await User.findById(id).select(data).populate({
         path: data,
         model: "Post",
-        select: "title description preview",
+        select: "title description preview tags createdAt",
       });
       break;
   }
@@ -66,6 +78,19 @@ const getMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: req.user,
+  });
+});
+
+const getUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id).select(
+    "username followers createdAt posts banner photo"
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: user,
   });
 });
 
@@ -145,6 +170,7 @@ const toggleFollowing = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
+  getUser,
   findUser,
   getUserData,
   getMe,
