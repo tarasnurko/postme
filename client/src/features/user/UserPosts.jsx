@@ -7,8 +7,6 @@ const UserPosts = () => {
 
   const { data, isLoading } = useGetUserDataQuery({ id, data: "posts" });
 
-  // if (!isLoading) console.log(data.posts);
-
   return (
     <div className="mt-6 flex flex-col gap-8">
       {!isLoading &&

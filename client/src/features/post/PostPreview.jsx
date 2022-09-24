@@ -2,14 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const PostPreview = (props) => {
-  console.log(props);
+  // console.log(props);
 
   return (
     <div className="flex justify-between gap-5 pb-8 border-b border-gray-400">
       <div className="flex flex-col gap-4">
         <div className="flex justify-start items-center gap-4">
           <Link
-            to={`users/${props.post.user._id}`}
+            to={`/users/${props.post.user._id}`}
             className="flex items-center gap-3"
           >
             <img
@@ -33,7 +33,7 @@ const PostPreview = (props) => {
             ))}
           </div>
         </div>
-        <Link to={`posts/${props.post._id}`} className="flex flex-col">
+        <Link to={`/posts/${props.post._id}`} className="flex flex-col">
           <h3 className="font-bold text-xl">{props.post.title}</h3>
           <p className="text-base">{props.post.description}</p>
         </Link>

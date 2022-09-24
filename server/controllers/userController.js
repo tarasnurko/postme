@@ -39,7 +39,7 @@ const getUserData = catchAsync(async (req, res, next) => {
       user = await User.findById(id).select(data).populate({
         path: data,
         model: "User",
-        select: "username photo",
+        select: "username photo followers",
       });
       break;
     case "likedPosts":
@@ -47,11 +47,12 @@ const getUserData = catchAsync(async (req, res, next) => {
         .select(data)
         .populate({
           path: data,
+          model: "Post",
+
           populate: {
             path: "user",
-            select: "username",
+            select: "username photo",
           },
-          model: "Post",
           select: "title description preview tags createdAt",
         });
       break;
