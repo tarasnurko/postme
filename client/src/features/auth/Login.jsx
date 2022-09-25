@@ -44,7 +44,7 @@ const Login = () => {
   const handlePasswordInput = (e) => setPassword(e.target.value);
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-orange-300">
+    <div className="w-full h-[calc(100vh-60px)] flex justify-center items-center bg-orange-300">
       <div className="w-[800px] h-[500px] flex rounded-2xl drop-shadow-lg bg-white">
         <div className="flex flex-col flex-1 px-10 justify-center items-center gap-8">
           <h1 className="font-semibold text-4xl">Login</h1>
