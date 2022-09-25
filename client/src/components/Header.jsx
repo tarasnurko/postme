@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   MagnifyingGlassIcon,
   NewspaperIcon,
   InformationCircleIcon,
-  ShieldCheckIcon,
   LockClosedIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
@@ -40,7 +39,7 @@ const Header = () => {
           </li>
 
           <li>
-            {isAuthorized == null ? (
+            {!isAuthorized ? (
               <Link
                 to="/login"
                 className="flex items-center gap-2 px-5 py-1 bg-blue-600 text-white rounded-lg transition ease-in-out bg duration-700 hover:bg-blue-800"

@@ -20,7 +20,7 @@ const User = () => {
           {!isLoading && user?.banner && (
             <img
               className="shrink-0 w-full h-[150px] object-cover"
-              src={user.banner}
+              src={user?.banner}
               alt="banner"
             />
           )}
@@ -29,13 +29,15 @@ const User = () => {
               <div className="flex gap-4 items-center">
                 <img
                   className="shrink-0 w-16 h-16 bg-gray-700 rounded-full"
-                  src={user.photo}
+                  src={user?.photo}
                   alt="avatar"
                 />
 
                 <div className="flex flex-col gap-1">
-                  <p className="text-xl font-medium">{user.username}</p>
-                  <p className="text-base">{user.followers.length} followers</p>
+                  <p className="text-xl font-medium">{user?.username}</p>
+                  <p className="text-base">
+                    {user?.followers.length} followers
+                  </p>
                 </div>
               </div>
             )}

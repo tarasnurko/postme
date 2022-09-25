@@ -16,12 +16,24 @@ const router = express.Router();
 router.get("/find", findUser);
 router.get("/info", getUserData);
 
-router.use(passport.authenticate("jwt", { session: false }));
+// router.use(passport.authenticate("jwt", { session: false }));
 
-router.get("/me", getMe);
-router.patch("/updateMe", updateMe);
-router.delete("/deleteMe", deleteMe);
-router.get("/toggleFollowing/:id", toggleFollowing);
+// router.get("/me", getMe);
+router.patch(
+  "/updateMe",
+  passport.authenticate("jwt", { session: false }),
+  updateMe
+);
+router.delete(
+  "/deleteMe",
+  passport.authenticate("jwt", { session: false }),
+  deleteMe
+);
+router.get(
+  "/toggleFollowing/:id",
+  passport.authenticate("jwt", { session: false }),
+  toggleFollowing
+);
 
 router.get("/:id", getUser);
 
