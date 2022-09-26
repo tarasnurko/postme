@@ -22,7 +22,7 @@ const App = () => {
         <Route path="posts">
           <Route path=":id" element={<Post />} />
           <Route path="create" element={<RequireAuth />}>
-            {/* <Route index path={<PostCreate />} /> */}
+            <Route index element={<PostCreate />} />
           </Route>
         </Route>
 
