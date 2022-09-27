@@ -1,99 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-const InputImage = (props) => {
+const Input = (props) => {
   const {
     name,
+    handleChange,
+    value,
+
     placeholderFirst,
-    minlengthFirst,
-    maxlengthFirst,
+    placeholderSecond,
+
+    rowsFirst,
+    rowsSecond,
+
+    inputStylesFirst,
+    inputStylesSecond,
+    inputErrStylesFirst,
+
     errMinMsgFirst,
     errMaxMsgFirst,
-    rowsFirst,
-    inputStylesFirst,
-    inputErrStylesFirst,
-    placeholderSecond,
-    minlengthSecond,
+
+    minlengthFirst,
+    maxlengthFirst,
     maxlengthSecond,
-    errMinMsgSecond,
-    errMaxMsgSecond,
-    rowsSecond,
-    inputStylesSecond,
-    inputErrStylesSecond,
+
     blockStyles,
   } = props;
 
-  const [errFirst, setErrFirst] = useState("");
-  const [errSecond, setErrSecond] = useState("");
-  const [valueFirst, setValueFirst] = useState("");
-  const [valueSecond, setValueSecond] = useState("");
-  const [clickedFirst, setClickedFirst] = useState(false);
-  const [clickedSecond, setClickedSecond] = useState(false);
+  const handleContent = (e) => {
+    let inputVal = e.target.value;
 
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      if (clickedFirst) {
-        const firstTrimmed = valueFirst.trim();
-
-        if (minlengthFirst && errMinMsgFirst && firstTrimmed < minlengthFirst) {
-          setErrFirst(errMinMsgFirst);
-        } else if (
-          maxlengthFirst &&
-          errMaxMsgFirst &&
-          firstTrimmed < maxlengthFirst
-        ) {
-          setErrFirst(errMaxMsgFirst);
-        } else {
-          setErrFirst("");
-        }
-      }
-
-      if (clickedSecond) {
-        const secondTrimmed = valueSecond.trim();
-
-        if (
-          minlengthSecond &&
-          errMinMsgSecond &&
-          secondTrimmed < minlengthSecond
-        ) {
-          setErrFirst(errMinMsgSecond);
-        } else if (
-          maxlengthSecond &&
-          errMaxMsgSecond &&
-          secondTrimmed > maxlengthSecond
-        ) {
-          setErrSecond(errMaxMsgSecond);
-        } else {
-          setErrSecond("");
-        }
-      }
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [
-    clickedFirst,
-    clickedSecond,
-    errMaxMsgFirst,
-    errMaxMsgSecond,
-    errMinMsgFirst,
-    errMinMsgSecond,
-    maxlengthFirst,
-    maxlengthSecond,
-    minlengthFirst,
-    minlengthSecond,
-    valueFirst,
-    valueSecond,
-  ]);
-
-  const handleInputFirst = (e) => {
-    if (!clickedFirst) setClickedFirst(true);
-
-    setValueFirst(e.target.value);
+    if (minlengthFirst && errMinMsgFirst && inputVal.length < minlengthFirst) {
+      handleChange(value?.id, {
+        content: e.target.value,
+        err: errMinMsgFirst,
+      });
+    } else if (
+      maxlengthFirst &&
+      errMaxMsgFirst &&
+      inputVal.length > maxlengthFirst
+    ) {
+      handleChange(value?.id, {
+        content: e.target.value,
+        err: errMaxMsgFirst,
+      });
+    } else {
+      handleChange(value?.id, {
+        content: inputVal,
+        err: "",
+      });
+    }
   };
 
-  const handleInputSecond = (e) => {
-    if (!clickedSecond) setClickedSecond(true);
+  const handleSub = (e) => {
+    let inputVal = e.target.value;
 
-    setValueSecond(e.target.value);
+    handleChange(value?.id, {
+      sub: inputVal,
+    });
   };
 
   return (
@@ -103,27 +66,27 @@ const InputImage = (props) => {
       </label>
       <textarea
         placeholder={placeholderFirst}
-        value={valueFirst}
-        onChange={handleInputFirst}
+        value={value?.content}
+        onChange={handleContent}
         rows={rowsFirst}
         maxLength={maxlengthFirst}
-        className={!errFirst ? `${inputStylesFirst}` : `${inputErrStylesFirst}`}
+        className={
+          !value?.err ? `${inputStylesFirst}` : `${inputErrStylesFirst}`
+        }
       />
       <textarea
         placeholder={placeholderSecond}
-        value={valueSecond}
-        onChange={handleInputSecond}
+        value={value?.sub}
+        onChange={handleSub}
         rows={rowsSecond}
         maxLength={maxlengthSecond}
-        className={
-          !errSecond ? `${inputStylesSecond}` : `${inputErrStylesSecond}`
-        }
+        className={inputStylesSecond}
       />
-      {(errSecond || errFirst) && (
-        <p className="ml-2 mt-2 text-sm text-red-400">{`${errFirst}  ${errSecond}`}</p>
+      {value?.err && (
+        <p className="ml-2 mt-2 text-sm text-red-400">{value?.err}</p>
       )}
     </div>
   );
 };
 
-export default InputImage;
+export default Input;

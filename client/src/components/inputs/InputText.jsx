@@ -5,8 +5,8 @@ const InputText = (props) => {
   return (
     <Input
       name="Text"
-      initialValue={props.initialValue}
-      valueChange={props.valueChange}
+      handleChange={props.handleChange}
+      value={props.value}
       minlength={20}
       maxlength={2000}
       errMinMsg="Text must have at least 20 characters"

@@ -4,7 +4,8 @@ import Input from "./Input";
 const InputSubtitle = (props) => {
   return (
     <Input
-      initialValue={props.initialValue}
+      handleChange={props.handleChange}
+      value={props.value}
       name="Subtitle"
       minlength={6}
       maxlength={100}

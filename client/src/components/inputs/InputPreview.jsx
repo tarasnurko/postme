@@ -4,9 +4,9 @@ import Input from "./Input";
 const InputPreview = (props) => {
   return (
     <Input
-      onChange={props.onChange}
-      initialState={props.initialState}
-      name="Preview"
+      handleChange={props.handleChange}
+      value={props.value}
+      name="Preview Link"
       minlength={1}
       errMinMsg="Post must have a preview"
       rows={2}

@@ -4,9 +4,9 @@ import Input from "./Input";
 const InputDescription = (props) => {
   return (
     <Input
-      onChange={props.onChange}
-      initialState={props.initialState}
       name="Description"
+      handleChange={props.handleChange}
+      value={props.value}
       minlength={20}
       maxlength={260}
       errMinMsg="Description must have at least 20 characters"

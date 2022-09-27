@@ -4,9 +4,9 @@ import Input from "./Input";
 const InputTitle = (props) => {
   return (
     <Input
-      onChange={props.onChange}
-      initialValue={props.initialValue}
       name="Title"
+      handleChange={props.handleChange}
+      value={props.value}
       minlength={6}
       maxlength={50}
       errMinMsg="Title must have at least 6 characters"
