@@ -54,6 +54,31 @@ const PostCreate = () => {
     });
   };
 
+  const handleMove = (id, direction) => {
+    setInputs((prevValue) => {
+      let newArray = [...prevValue];
+
+      const index = prevValue.findIndex((item) => item.id === id);
+      const element = prevValue[index];
+
+      console.log(index, element);
+
+      if (index < prevValue.length - 1 && direction === 1) {
+        newArray.splice(index, 1);
+        newArray.splice(index + 1, 0, element);
+      } else if (index > 3 && direction === -1) {
+        newArray.splice(index, 1);
+        newArray.splice(index - 1, 0, element);
+      }
+
+      return newArray;
+    });
+  };
+
+  const handleDelete = (id) => {
+    setInputs((prevValue) => prevValue.filter((item) => item.id !== id));
+  };
+
   return (
     <>
       <section className="container mx-auto px-20">
@@ -91,6 +116,8 @@ const PostCreate = () => {
                     key={input?.id}
                     value={input}
                     handleChange={handleChange}
+                    handleMove={handleMove}
+                    handleDelete={handleDelete}
                   />
                 );
               } else if (input?.type === "text") {
@@ -99,6 +126,8 @@ const PostCreate = () => {
                     key={input?.id}
                     value={input}
                     handleChange={handleChange}
+                    handleMove={handleMove}
+                    handleDelete={handleDelete}
                   />
                 );
               } else if (input?.type === "image") {
@@ -107,6 +136,8 @@ const PostCreate = () => {
                     key={input?.id}
                     value={input}
                     handleChange={handleChange}
+                    handleMove={handleMove}
+                    handleDelete={handleDelete}
                   />
                 );
               } else if (input?.type === "link") {
@@ -115,6 +146,8 @@ const PostCreate = () => {
                     key={input?.id}
                     value={input}
                     handleChange={handleChange}
+                    handleMove={handleMove}
+                    handleDelete={handleDelete}
                   />
                 );
               }

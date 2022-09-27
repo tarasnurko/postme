@@ -5,6 +5,8 @@ const InputImage = (props) => {
   return (
     <InputTwo
       handleChange={props.handleChange}
+      handleMove={props.handleMove}
+      handleDelete={props.handleDelete}
       value={props.value}
       name="Image"
       placeholderFirst="Image link"

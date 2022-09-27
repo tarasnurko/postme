@@ -5,6 +5,8 @@ const InputLink = (props) => {
   return (
     <InputTwo
       handleChange={props.handleChange}
+      handleMove={props.handleMove}
+      handleDelete={props.handleDelete}
       value={props.value}
       name="Link"
       placeholderFirst="Link"

@@ -5,6 +5,8 @@ const InputSubtitle = (props) => {
   return (
     <Input
       handleChange={props.handleChange}
+      handleMove={props.handleMove}
+      handleDelete={props.handleDelete}
       value={props.value}
       name="Subtitle"
       minlength={6}

@@ -4,9 +4,11 @@ import Input from "./Input";
 const InputText = (props) => {
   return (
     <Input
-      name="Text"
       handleChange={props.handleChange}
+      handleMove={props.handleMove}
+      handleDelete={props.handleDelete}
       value={props.value}
+      name="Text"
       minlength={20}
       maxlength={2000}
       errMinMsg="Text must have at least 20 characters"

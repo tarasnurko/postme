@@ -1,8 +1,15 @@
 import React from "react";
+import {
+  ChevronDoubleUpIcon,
+  ChevronDoubleDownIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 const Input = (props) => {
   const {
     handleChange,
+    handleMove,
+    handleDelete,
     value,
     name,
     minlength,
@@ -27,11 +34,41 @@ const Input = (props) => {
     }
   };
 
+  const deleteItem = () => {
+    handleDelete(value?.id);
+  };
+
+  const moveItem = (direction) => {
+    handleMove(value?.id, direction);
+  };
+
   return (
     <div className={`${blockStyles}`}>
       <label className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500">
         {name}
       </label>
+      <div className="absolute top-[-24px] right-2 h-6 flex items-center gap-5">
+        {handleDelete && (
+          <div>
+            <XMarkIcon
+              className="w-6 h-6 cursor-pointer"
+              onClick={deleteItem}
+            />
+          </div>
+        )}
+        {handleMove && (
+          <div className="flex gap-2">
+            <ChevronDoubleDownIcon
+              className="w-6 h-6 cursor-pointer"
+              onClick={() => moveItem(1)}
+            />
+            <ChevronDoubleUpIcon
+              className="w-6 h-6 cursor-pointer"
+              onClick={() => moveItem(-1)}
+            />
+          </div>
+        )}
+      </div>
       <textarea
         placeholder={name}
         value={value?.content}
