@@ -42,7 +42,7 @@ const Post = () => {
               <img
                 src="https://images.pexels.com/photos/9969679/pexels-photo-9969679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                 alt="preview"
-                className="max-w-[500px] max-h-[300px] object-cover"
+                className="w-[500px] h-[300px] object-cover"
               />
 
               <p className="text-base font-medium">

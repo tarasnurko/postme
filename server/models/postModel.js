@@ -6,7 +6,7 @@ const postSchema = mongoose.Schema(
       type: String,
       required: [true, "Please provide title"],
       minlength: 6,
-      maxlength: 50,
+      maxlength: 70,
       trim: true,
     },
     description: {

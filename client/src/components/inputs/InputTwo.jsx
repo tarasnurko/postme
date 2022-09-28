@@ -70,7 +70,6 @@ const Input = (props) => {
     handleDelete(value?.id);
   };
 
-  console.log(value);
   const moveItem = (direction) => {
     handleMove(value?.id, direction);
   };

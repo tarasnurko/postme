@@ -33,6 +33,24 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         return responseData.data;
       },
     }),
+    createPost: builder.mutation({
+      query: (data) => ({
+        url: "/posts",
+        method: "POST",
+        body: {
+          ...data,
+        },
+      }),
+    }),
+    updatePost: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `posts/${id}`,
+        method: "PATCH",
+        body: {
+          ...data,
+        },
+      }),
+    }),
   }),
 });
 
@@ -41,4 +59,6 @@ export const {
   useGetLatestPostsQuery,
   useGetMostLikedPostsQuery,
   useGetPostQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
 } = postsApiSlice;

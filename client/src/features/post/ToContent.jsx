@@ -21,10 +21,30 @@ const ToContent = (props) => {
             <div key={index} className="my-5 flex flex-col items-center gap-2">
               <img
                 className="max-w-full max-h-[300px] object-cover"
-                src={item?.src}
-                alt={item?.alt}
+                src={item?.content}
+                alt={item?.sub}
               />
-              {item.alt && <p className="text-xs text-gray-500">{item.alt}</p>}
+              {item?.sub && <p className="text-sm text-gray-500">{item.sub}</p>}
+            </div>
+          );
+        } else if (item.type === "link") {
+          return (
+            <div key={index} className="text-center">
+              {item?.sub ? (
+                <a
+                  href={item?.content}
+                  className="text-base text-violet-700 underline"
+                >
+                  {item?.sub}
+                </a>
+              ) : (
+                <a
+                  href={item?.content}
+                  className="text-base text-violet-700 underline"
+                >
+                  {item?.content}
+                </a>
+              )}
             </div>
           );
         } else return "";
