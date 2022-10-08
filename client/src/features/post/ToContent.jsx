@@ -7,21 +7,21 @@ const ToContent = (props) => {
         if (item.type === "subtitle") {
           return (
             <h2 key={index} className="font-semibold text-2xl">
-              {item.content}
+              {item.text}
             </h2>
           );
         } else if (item.type === "text") {
           return (
             <p key={index} className="text-lg">
-              {item.content}
+              {item.text}
             </p>
           );
         } else if (item.type === "image") {
           return (
             <div key={index} className="my-5 flex flex-col items-center gap-2">
               <img
-                className="max-w-full max-h-[300px] object-cover"
-                src={item?.content}
+                className="max-w-full max-h-[500px] object-cover"
+                src={item?.text}
                 alt={item?.sub}
               />
               {item?.sub && <p className="text-sm text-gray-500">{item.sub}</p>}
@@ -32,17 +32,17 @@ const ToContent = (props) => {
             <div key={index} className="text-center">
               {item?.sub ? (
                 <a
-                  href={item?.content}
+                  href={item?.text}
                   className="text-base text-violet-700 underline"
                 >
                   {item?.sub}
                 </a>
               ) : (
                 <a
-                  href={item?.content}
+                  href={item?.text}
                   className="text-base text-violet-700 underline"
                 >
-                  {item?.content}
+                  {item?.text}
                 </a>
               )}
             </div>

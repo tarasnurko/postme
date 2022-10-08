@@ -5,15 +5,15 @@ const postSchema = mongoose.Schema(
     title: {
       type: String,
       required: [true, "Please provide title"],
-      minlength: 6,
-      maxlength: 70,
+      minlength: 8,
+      maxlength: 80,
       trim: true,
     },
     description: {
       type: String,
       required: [true, "Please provide description"],
-      maxlength: 260,
       minlength: 20,
+      maxlength: 300,
     },
     preview: {
       type: String,
@@ -24,8 +24,13 @@ const postSchema = mongoose.Schema(
           type: String,
           required: true,
         },
-        content: String,
-        sub: String,
+        text: {
+          type: String,
+        },
+        sub: {
+          type: String,
+          maxlength: 50,
+        },
       },
     ],
     user: {
