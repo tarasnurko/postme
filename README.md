@@ -27,4 +27,6 @@
 [ ] Create Read Post page  
 [ ] Create Create Post page  
 [ ] Create Account page  
-[ ] Create Search page
+[ ] Create Search page  
+[ ] Create Modal Window  
+[ ] Create PostEdit

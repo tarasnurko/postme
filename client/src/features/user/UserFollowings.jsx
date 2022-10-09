@@ -1,5 +1,7 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Spinner from "../../components/Spinner";
+import UserPreview from "../../components/user/UserPreview";
 import { useGetUserDataQuery } from "./userApiSlice";
 
 const UserFollowings = () => {
@@ -8,28 +10,31 @@ const UserFollowings = () => {
   const { data, isLoading } = useGetUserDataQuery({ id, data: "followings" });
 
   return (
-    <div className="mt-6 grid auto-rows-[60px] grid-cols-3 gap-5">
-      {!isLoading &&
-        data.followings.map((following) => (
-          <Link
-            to={`/users/${following._id}`}
-            key={following._id}
-            className="flex items-center gap-3"
-          >
-            <img
-              className="shrink-0 w-12 h-12 bg-gray-700 rounded-full"
-              src={following.photo}
-              alt="user"
+    <>
+      {isLoading && (
+        <div className="w-full flex justify-center">
+          <Spinner />
+        </div>
+      )}
+
+      {!isLoading && data.followings.length > 0 && (
+        <div className="mt-6 grid auto-rows-[60px] grid-cols-3 gap-5">
+          {data.followings.map((following) => (
+            <UserPreview
+              key={following._id}
+              id={following._id}
+              photo={following.photo}
+              username={following.username}
+              followers={following.followers.length}
             />
-            <div className="flex flex-col justify-center">
-              <p className="font-medium text-base">{following.username}</p>
-              <p className="font-sm text-gray-600">
-                {following.followers.length} followers
-              </p>
-            </div>
-          </Link>
-        ))}
-    </div>
+          ))}
+        </div>
+      )}
+
+      {!isLoading && data.followings.length === 0 && (
+        <p className="text-lg font-medium text-center">No Followings</p>
+      )}
+    </>
   );
 };
 

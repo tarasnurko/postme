@@ -51,7 +51,7 @@ const getUserData = catchAsync(async (req, res, next) => {
 
           populate: {
             path: "user",
-            select: "username photo",
+            select: "username photo followers",
           },
           select: "title description preview tags createdAt",
         });
