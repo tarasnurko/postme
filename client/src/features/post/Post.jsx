@@ -34,7 +34,6 @@ const Post = () => {
                 />
                 <div className="flex justify-start items-center gap-3">
                   <p className="text-xs text-zinc-400">2 month ago</p>
-                  <p className="font-medium text-base text-zinc-400">EN</p>
                 </div>
               </div>
               {post.tags.length > 0 && <Tags tags={post.tags} />}

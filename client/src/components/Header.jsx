@@ -13,7 +13,7 @@ const Header = () => {
   const { isAuthorized, userId, username } = useAuth();
 
   return (
-    <header className="w-screen max-w-full mx-auto h-[60px] sticky top-0 z-50  bg-purple-100">
+    <header className="w-screen max-w-full mx-auto h-[60px] sticky top-0 z-30  bg-purple-100">
       <div className="container mx-auto px-20 flex items-center h-full">
         <div className="font-jakarta text-2xl font-semibold">Postme</div>
         <ul className="w-full flex items-center justify-end gap-6 text-base font-medium">

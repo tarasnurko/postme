@@ -11,6 +11,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import FormObserver from "../../components/utils/FormObserver";
+import Tags from "../../components/post/Tags";
+import Modal from "../../components/modal/Modal";
 
 const initialValues = {
   title: "",
@@ -67,6 +69,7 @@ const PostCreate = () => {
   const [tagInput, setTagInput] = useState("");
   const [formValues, setFormValues] = useState(initialValues);
   const [errMsg, setErrMsg] = useState("");
+  const [modal, setModal] = useState(false);
 
   const [createPost, { isLoading }] = useCreatePostMutation();
   const navigate = useNavigate();
@@ -75,9 +78,9 @@ const PostCreate = () => {
     setFormValues(() => values);
   };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async () => {
     try {
-      await createPost(values);
+      await createPost(formValues);
       navigate("/");
     } catch (err) {
       setErrMsg(err);
@@ -113,8 +116,18 @@ const PostCreate = () => {
     }
   };
 
+  const handleOpenModal = () => setModal(true);
+  const handleCloseModal = () => setModal(false);
+
   return (
     <>
+      {modal && (
+        <Modal
+          type="create"
+          onClose={handleCloseModal}
+          onConfirm={handleSubmit}
+        />
+      )}
       <section className="container mx-auto px-20">
         <div className="w-[800px] flex flex-col my-10 gap-4">
           <h1 className="font-semibold text-3xl">Create Post</h1>
@@ -122,7 +135,7 @@ const PostCreate = () => {
             <Formik
               initialValues={initialValues}
               validationSchema={PostSchema}
-              onSubmit={handleSubmit}
+              onSubmit={handleOpenModal}
             >
               {({ values, errors, touched }) => (
                 <Form className="flex flex-col gap-8">
@@ -530,42 +543,39 @@ const PostCreate = () => {
                 </Form>
               )}
             </Formik>
-            <div className="flex flex-col gap-10">
-              {formValues.title && (
-                <h2 className="font-semibold text-3xl">{formValues.title}</h2>
-              )}
-              {formValues.tags.length > 0 && (
-                <div className="flex items-center gap-4">
-                  {formValues.tags.map((tag, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 px-4 py-1 bg-gray-300 rounded-xl font-medium text-sm"
-                    >
-                      {tag}
-                    </div>
-                  ))}
-                </div>
-              )}
+            {(formValues.title ||
+              formValues.tags.length > 0 ||
+              formValues.preview ||
+              formValues.description) && (
+              <div className="flex flex-col gap-10">
+                {formValues.title && (
+                  <h2 className="font-semibold text-3xl">{formValues.title}</h2>
+                )}
+                {formValues.tags.length > 0 && <Tags tags={formValues.tags} />}
 
-              {(formValues.preview || formValues.description) && (
-                <div className="flex justify-between items-center gap-5">
-                  {formValues.preview && (
-                    <img
-                      src={formValues.preview}
-                      alt="preview"
-                      className="w-[500px] h-[300px] object-cover flex-shrink-0"
-                    />
-                  )}
+                {(formValues.preview || formValues.description) && (
+                  <div className="flex justify-between items-center gap-5">
+                    {formValues.preview && (
+                      <img
+                        src={formValues.preview}
+                        alt="preview"
+                        className="w-[500px] h-[300px] object-cover flex-shrink-0"
+                      />
+                    )}
 
-                  {formValues.description && (
-                    <p className="text-base font-medium">
-                      {formValues.description}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-            <ToContent content={formValues.content} />
+                    {formValues.description && (
+                      <p className="text-base font-medium">
+                        {formValues.description}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {formValues.content.length > 0 && (
+              <ToContent content={formValues.content} />
+            )}
           </div>
         </div>
       </section>
