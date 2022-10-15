@@ -1,19 +1,28 @@
 import {
   ChatBubbleBottomCenterTextIcon,
   HandThumbUpIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import Spinner from "../../components/Spinner";
 import UserPreview from "../../components/user/UserPreview";
 import { useGetPostQuery } from "./postsApiSlice";
 import ToContent from "./ToContent";
 import Tags from "../../components/post/Tags";
+import PostDate from "../../components/post/PostDate";
+import useAuth from "../../hooks/useAuth";
 
 const Post = () => {
   const { id } = useParams();
   const { data: post, isLoading } = useGetPostQuery(id);
+
+  const { isAuthorized, userId, role } = useAuth();
+
+  const checkCanEdit = () => {
+    return isAuthorized && (userId === post.user._id || role === "admin");
+  };
 
   return (
     <>
@@ -32,9 +41,15 @@ const Post = () => {
                   username={post.user.username}
                   followers={post.user.followers.length}
                 />
-                <div className="flex justify-start items-center gap-3">
-                  <p className="text-xs text-zinc-400">2 month ago</p>
-                </div>
+                <PostDate />
+                {checkCanEdit() && (
+                  <Link
+                    to={"edit"}
+                    className="w-6 h-6 ml-[auto] cursor-pointer"
+                  >
+                    <PencilSquareIcon className="" />
+                  </Link>
+                )}
               </div>
               {post.tags.length > 0 && <Tags tags={post.tags} />}
               <div className="flex flex-col gap-10">

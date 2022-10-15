@@ -3,16 +3,27 @@ import Sidebar from "../../components/Sidebar";
 import ToContent from "./ToContent";
 import { useCreatePostMutation } from "./postsApiSlice";
 import { useNavigate } from "react-router-dom";
-import { Formik, Field, Form, FieldArray } from "formik";
-import * as Yup from "yup";
-import {
-  ChevronDoubleDownIcon,
-  ChevronDoubleUpIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Formik, Form, FieldArray } from "formik";
+import PostSchema from "../../utils/validation/PostSchema";
+
 import FormObserver from "../../components/utils/FormObserver";
 import Tags from "../../components/post/Tags";
 import Modal from "../../components/modal/Modal";
+
+// import TitleInput from "../../components/inputs/TitleInput";
+import {
+  TitleInput,
+  DescriptionInput,
+  PreviewInput,
+  TagsInput,
+  SubtitleInput,
+  TextInput,
+  ImageInput,
+  LinkInput,
+} from "../../components/inputs";
+
+import CreateButton from "../../components/common/buttons/CreateButton";
+import DefaultButton from "../../components/common/buttons/colors/DefaultButton";
 
 const initialValues = {
   title: "",
@@ -21,48 +32,6 @@ const initialValues = {
   tags: [],
   content: [],
 };
-
-const PostSchema = Yup.object().shape({
-  title: Yup.string()
-    .min(8, "Title must have at least 8 characters!")
-    .max(80, "Title can't have more then 80 characters!")
-    .required("Title is required field"),
-  preview: Yup.string().required("Post must have a preview (url)"),
-  description: Yup.string()
-    .min(20, "Description must have at least 20 characters!")
-    .max(300, "Description can't have more then 300 characters")
-    .required("Description is required field"),
-  tags: Yup.array().max(5, "You can't add more then 5 tags!"),
-
-  content: Yup.array().of(
-    Yup.object().shape({
-      type: Yup.string().required("Type is required!"),
-      text: Yup.string()
-        .when("type", {
-          is: "subtitle",
-          then: Yup.string()
-            .min(8, "Subtitle must have at least 8 characters!")
-            .max(80, "Subtitle can't have more then 80 characters!")
-            .required("Subtitle is required field"),
-        })
-        .when("type", {
-          is: "text",
-          then: Yup.string()
-            .min(10, "Text must have at least 10 characters!")
-            .max(2000, "Text can't have more then 2000 characters")
-            .required("Text is required field"),
-        })
-        .when("type", {
-          is: "image",
-          then: Yup.string().required("Image must have a url!"),
-        })
-        .when("type", {
-          is: "link",
-          then: Yup.string().required("Link is required!"),
-        }),
-    })
-  ),
-});
 
 const PostCreate = () => {
   const [newInputType, setNewInputType] = useState("subtitle");
@@ -140,368 +109,129 @@ const PostCreate = () => {
               {({ values, errors, touched }) => (
                 <Form className="flex flex-col gap-8">
                   <FormObserver onChange={handleChangeForm} />
-                  <div className="relative min-h-[85px] flex flex-col gap-2">
-                    <label
-                      htmlFor="title"
-                      className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                    >
-                      Title
-                    </label>
-                    <Field
-                      className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
-                      id="title"
-                      name="title"
-                      placeholder="Title"
-                      maxLength={80}
-                    />
-                    {touched.title && errors.title && (
-                      <p className="ml-2 mt-2 text-sm text-red-400">
-                        {errors.title}
-                      </p>
-                    )}
-                  </div>
-                  <div className="relative min-h-[85px] flex flex-col gap-2">
-                    <label
-                      htmlFor="preview"
-                      className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                    >
-                      Preview
-                    </label>
-                    <Field
-                      className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
-                      id="preview"
-                      name="preview"
-                      placeholder="Preview url"
-                      maxLength={500}
-                    />
-                    {touched.preview && errors.preview && (
-                      <p className="ml-2 mt-2 text-sm text-red-400">
-                        {errors.preview}
-                      </p>
-                    )}
-                  </div>
-                  <div className="relative min-h-[170px] flex flex-col gap-2">
-                    <label
-                      htmlFor="description"
-                      className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                    >
-                      Description
-                    </label>
-                    <Field
-                      className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none resize-vertical"
-                      id="description"
-                      name="description"
-                      placeholder="Description"
-                      as="textarea"
-                      rows={4}
-                      maxLength={300}
-                    />
-                    {touched.description && errors.description && (
-                      <p className="ml-2 mt-2 text-sm text-red-400">
-                        {errors.description}
-                      </p>
-                    )}
-                  </div>
-                  <FieldArray name="tags" className="flex flex-col gap-4">
-                    {({ remove, push }) => (
-                      <div className="relative min-h-[120px] flex flex-col gap-2">
-                        <label
-                          htmlFor="description"
-                          className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                        >
-                          Tag
-                        </label>
-                        <input
-                          className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none resize-vertical"
-                          name="tag"
-                          placeholder="Tag"
-                          maxLength={15}
-                          type="text"
-                          value={tagInput}
-                          onChange={handleTagChange}
-                        />
-                        <button
-                          type="button"
-                          className="absolute top-2 right-4 px-4 py-1 bg-sky-500 rounded-lg"
-                          onClick={() => handleAddTag(push)}
-                        >
-                          Add
-                        </button>
-                        <div className="flex gap-4 flex-wrap">
-                          {values.tags.length > 0 &&
-                            values.tags.map((tag, index) => (
-                              <div
-                                key={index}
-                                className="flex items-center gap-2 px-4 py-1 bg-gray-300 rounded-xl font-medium text-sm"
-                                onClick={() => remove(index)}
-                              >
-                                <p>{tag}</p>
-                                <XMarkIcon className="w-5 h-5" />
-                              </div>
-                            ))}
-                        </div>
-                        {touched.tags && errors.tags && (
-                          <p className="ml-2 mt-2 text-sm text-red-400">
-                            {errors.tags}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </FieldArray>
+                  <TitleInput
+                    isError={touched.title && errors.title}
+                    error={errors.title}
+                  />
+
+                  <PreviewInput
+                    isError={touched.preview && errors.preview}
+                    error={errors.preview}
+                  />
+                  <DescriptionInput
+                    isError={touched.description && errors.description}
+                    error={errors.description}
+                  />
+
+                  <TagsInput
+                    tagInput={tagInput}
+                    onTagChange={handleTagChange}
+                    onAddTag={handleAddTag}
+                    tags={values.tags}
+                    isError={errors.tags}
+                    error={errors.tags}
+                  />
+
                   <FieldArray name="content" className="flex flex-col gap-4">
                     {({ remove, push, swap }) => (
                       <>
-                        <div className="flex flex-col gap-8">
-                          {values.content.length > 0 &&
-                            values.content.map((content, index) => {
+                        {values.content.length > 0 && (
+                          <div className="flex flex-col gap-8">
+                            {values.content.map((content, index) => {
                               if (content.type === "subtitle") {
                                 return (
-                                  <div
+                                  <SubtitleInput
                                     key={index}
-                                    className="relative min-h-[85px] flex flex-col gap-2"
-                                  >
-                                    <label
-                                      htmlFor={`content[${index}].text`}
-                                      className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                                    >
-                                      Subtitle
-                                    </label>
-                                    <div className="absolute top-[-24px] right-2 h-5 flex items-center gap-4">
-                                      <div className="flex gap-2">
-                                        {checkItemMoveUp(index) && (
-                                          <ChevronDoubleUpIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemUp(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        {checkItemMoveDown(
-                                          index,
-                                          values.content.length
-                                        ) && (
-                                          <ChevronDoubleDownIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemDown(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        <XMarkIcon
-                                          className="w-5 h-5 cursor-pointer"
-                                          onClick={() =>
-                                            deleteItem(remove, index)
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                    <Field
-                                      className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
-                                      name={`content[${index}].text`}
-                                      placeholder="Subtitle"
-                                      maxLength={70}
-                                    />
-
-                                    {errors.content &&
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
                                       touched.content &&
                                       errors.content[index]?.text &&
-                                      touched.content[index]?.text && (
-                                        <p className="ml-2 mt-2 text-sm text-red-400">
-                                          {errors.content[index].text}
-                                        </p>
-                                      )}
-                                  </div>
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
                                 );
                               } else if (content.type === "text") {
                                 return (
-                                  <div
+                                  <TextInput
                                     key={index}
-                                    className="relative min-h-[170px] flex flex-col gap-2"
-                                  >
-                                    <label
-                                      htmlFor={`content[${index}].text`}
-                                      className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                                    >
-                                      Text
-                                    </label>
-                                    <div className="absolute top-[-24px] right-2 h-5 flex items-center gap-4">
-                                      <div className="flex gap-2">
-                                        {checkItemMoveUp(index) && (
-                                          <ChevronDoubleUpIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemUp(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        {checkItemMoveDown(
-                                          index,
-                                          values.content.length
-                                        ) && (
-                                          <ChevronDoubleDownIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemDown(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        <XMarkIcon
-                                          className="w-5 h-5 cursor-pointer"
-                                          onClick={() =>
-                                            deleteItem(remove, index)
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                    <Field
-                                      className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none resize-vertical"
-                                      name={`content[${index}].text`}
-                                      placeholder="Text"
-                                      as="textarea"
-                                      rows={4}
-                                      maxLength={2000}
-                                    />
-                                    {errors.content &&
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
                                       touched.content &&
                                       errors.content[index]?.text &&
-                                      touched.content[index]?.text && (
-                                        <p className="ml-2 mt-2 text-sm text-red-400">
-                                          {errors.content[index].text}
-                                        </p>
-                                      )}
-                                  </div>
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
                                 );
                               } else if (content.type === "image") {
                                 return (
-                                  <div
+                                  <ImageInput
                                     key={index}
-                                    className="relative min-h-[140px] flex flex-col gap-2"
-                                  >
-                                    <label
-                                      htmlFor={`content[${index}].text`}
-                                      className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                                    >
-                                      Image
-                                    </label>
-                                    <div className="absolute top-[-24px] right-2 h-5 flex items-center gap-4">
-                                      <div className="flex gap-2">
-                                        {checkItemMoveUp(index) && (
-                                          <ChevronDoubleUpIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemUp(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        {checkItemMoveDown(
-                                          index,
-                                          values.content.length
-                                        ) && (
-                                          <ChevronDoubleDownIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemDown(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        <XMarkIcon
-                                          className="w-5 h-5 cursor-pointer"
-                                          onClick={() =>
-                                            deleteItem(remove, index)
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                    <Field
-                                      className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
-                                      name={`content[${index}].text`}
-                                      placeholder="Image url"
-                                      maxLength={500}
-                                    />
-                                    <Field
-                                      className="w-[400px] px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
-                                      name={`content[${index}].sub`}
-                                      placeholder="Image text"
-                                      maxLength={50}
-                                    />
-                                    {errors.content &&
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
                                       touched.content &&
                                       errors.content[index]?.text &&
-                                      touched.content[index]?.text && (
-                                        <p className="ml-2 mt-2 text-sm text-red-400">
-                                          {errors.content[index].text}
-                                        </p>
-                                      )}
-                                  </div>
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
                                 );
                               } else if (content.type === "link") {
                                 return (
-                                  <div
+                                  <LinkInput
                                     key={index}
-                                    className="relative min-h-[140px] flex flex-col gap-2"
-                                  >
-                                    <label
-                                      htmlFor={`content[${index}].text`}
-                                      className="absolute ml-2 top-[-20px] left-0 text-xs text-gray-500"
-                                    >
-                                      Link
-                                    </label>
-                                    <div className="absolute top-[-24px] right-2 h-5 flex items-center gap-4">
-                                      <div className="flex gap-2">
-                                        {checkItemMoveUp(index) && (
-                                          <ChevronDoubleUpIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemUp(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        {checkItemMoveDown(
-                                          index,
-                                          values.content.length
-                                        ) && (
-                                          <ChevronDoubleDownIcon
-                                            className="w-5 h-5 cursor-pointer"
-                                            onClick={() =>
-                                              moveItemDown(swap, index)
-                                            }
-                                          />
-                                        )}
-                                        <XMarkIcon
-                                          className="w-5 h-5 cursor-pointer"
-                                          onClick={() =>
-                                            deleteItem(remove, index)
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                    <Field
-                                      className="w-full px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
-                                      name={`content[${index}].text`}
-                                      placeholder="Link"
-                                      maxLength={500}
-                                    />
-                                    <Field
-                                      className="w-[400px] px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
-                                      name={`content[${index}].sub`}
-                                      placeholder="Link text"
-                                      maxLength={50}
-                                    />
-                                    {errors.content &&
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
                                       touched.content &&
                                       errors.content[index]?.text &&
-                                      touched.content[index]?.text && (
-                                        <p className="ml-2 mt-2 text-sm text-red-400">
-                                          {errors.content[index].text}
-                                        </p>
-                                      )}
-                                  </div>
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
                                 );
                               }
 
                               return "";
                             })}
-                        </div>
+                          </div>
+                        )}
 
                         <div className="px-2 py-4 flex justify-between items-center bg-neutral-300 rounded-sm">
                           <div className="flex items-center gap-5">
@@ -516,21 +246,11 @@ const PostCreate = () => {
                               <option value="image">Image</option>
                               <option value="link">Link</option>
                             </select>
-                            <button
-                              type="button"
-                              onClick={() => handleAddInput(push)}
-                              className="px-3 text-base font-medium bg-lime-600 rounded-sm"
-                            >
+                            <DefaultButton onClick={() => handleAddInput(push)}>
                               Add
-                            </button>
+                            </DefaultButton>
                           </div>
-                          <button
-                            type="submit"
-                            className="mr-6 px-3 text-base font-medium bg-orange-500 rounded-sm"
-                            disabled={isLoading}
-                          >
-                            Create Post
-                          </button>
+                          <CreateButton type="submit" disabled={isLoading} />
                         </div>
                         {errMsg && (
                           <p className="ml-2 mt-2 text-lg text-red-400">

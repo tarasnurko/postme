@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, Outlet, useLocation, useParams } from "react-router-dom";
+import FollowButton from "../../components/common/buttons/FollowButton";
+
 import Sidebar from "../../components/Sidebar";
 import { useGetUserQuery } from "./userApiSlice";
 
@@ -10,8 +12,6 @@ const User = () => {
   const page = url.pathname.split("/");
 
   const { data: user, isLoading } = useGetUserQuery(id);
-
-  // if (!isLoading) console.log(user);
 
   return (
     <>
@@ -41,9 +41,7 @@ const User = () => {
                 </div>
               </div>
             )}
-            <div className="px-5 py-1 text-lg bg-sky-400 rounded-2xl cursor-pointer">
-              Follow
-            </div>
+            <FollowButton />
           </div>
           <div className="mt-2 flex flex-col gap-10">
             <div className="flex items-center gap-8">

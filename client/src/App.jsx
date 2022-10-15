@@ -6,6 +6,7 @@ import Register from "./features/auth/Register";
 import RequireAuth from "./features/auth/RequireAuth";
 import Post from "./features/post/Post";
 import PostCreate from "./features/post/PostCreate";
+import PostEdit from "./features/post/PostEdit";
 import User from "./features/user/User";
 import UserFollowers from "./features/user/UserFollowers";
 import UserFollowings from "./features/user/UserFollowings";
@@ -23,6 +24,7 @@ const App = () => {
           <Route path=":id" element={<Post />} />
           <Route path="create" element={<RequireAuth />}>
             <Route index element={<PostCreate />} />
+            <Route path=":id/edit" element={<PostEdit />} />
           </Route>
         </Route>
 
