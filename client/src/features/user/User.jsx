@@ -4,9 +4,11 @@ import FollowButton from "../../components/common/buttons/FollowButton";
 
 import PageLayout from "../../components/PageLayout";
 import Sidebar from "../../components/Sidebar";
+import useAuth from "../../hooks/useAuth";
 import { useGetUserQuery } from "./userApiSlice";
 
 const User = () => {
+  const { userId } = useAuth();
   const { id } = useParams();
 
   const url = useLocation();
@@ -38,7 +40,7 @@ const User = () => {
             </div>
           </div>
         )}
-        <FollowButton />
+        <FollowButton disabled={userId === id} />
       </div>
       <div className="mt-2 flex flex-col gap-10">
         <div className="flex items-center gap-8">

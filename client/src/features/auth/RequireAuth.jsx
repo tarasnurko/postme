@@ -3,12 +3,12 @@ import { Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const RequireAuth = () => {
-  const { isAuthorized } = useAuth();
+  const { isAuthorized, userId } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthorized) navigate("/login");
-  }, [isAuthorized, navigate]);
+    if (!isAuthorized || !userId) navigate("/login");
+  }, [isAuthorized, userId, navigate]);
 
   return <Outlet />;
 };

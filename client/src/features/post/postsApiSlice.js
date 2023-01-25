@@ -16,7 +16,8 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getLatestPosts: builder.query({
-      query: (limit) => `posts/latest?limit=${limit}`,
+      query: ({ page = 1, limit = 10 }) =>
+        `posts/latest?page=${page}&limit=${limit}`,
       transformResponse: (responseData) => {
         return responseData.data;
       },

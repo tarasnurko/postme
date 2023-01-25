@@ -9,6 +9,7 @@ import CreateButton from "../../components/common/buttons/CreateButton";
 import DefaultButton from "../../components/common/buttons/colors/DefaultButton";
 import ErrorText from "../../components/common/text/ErrorText";
 
+import PageLayout from "../../components/PageLayout";
 import Modal from "../../components/modal/Modal";
 import FormObserver from "../../components/utils/FormObserver";
 import {
@@ -116,220 +117,203 @@ const PostEdit = () => {
         />
       )}
       {!isLoading && initialValues && a && (
-        <section className="container mx-auto px-20">
-          <div className="w-[800px] flex flex-col my-10 gap-4">
-            <h1 className="font-semibold text-3xl">Create Post</h1>
-            <div className="mt-8 flex flex-col gap-8">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={postSchema}
-                onSubmit={handleOpenModal}
-              >
-                {({ values, errors, touched }) => (
-                  <Form className="flex flex-col gap-8">
-                    <FormObserver onChange={handleChangeForm} />
-                    <TitleInput
-                      isError={touched.title && errors.title}
-                      error={errors.title}
-                    />
+        <PageLayout sidebar={<Sidebar />} gap={4}>
+          <h1 className="font-semibold text-3xl">Create Post</h1>
+          <div className="mt-8 flex flex-col gap-8">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={postSchema}
+              onSubmit={handleOpenModal}
+            >
+              {({ values, errors, touched }) => (
+                <Form className="flex flex-col gap-8">
+                  <FormObserver onChange={handleChangeForm} />
+                  <TitleInput
+                    isError={touched.title && errors.title}
+                    error={errors.title}
+                  />
 
-                    <PreviewInput
-                      isError={touched.preview && errors.preview}
-                      error={errors.preview}
-                    />
-                    <DescriptionInput
-                      isError={touched.description && errors.description}
-                      error={errors.description}
-                    />
+                  <PreviewInput
+                    isError={touched.preview && errors.preview}
+                    error={errors.preview}
+                  />
+                  <DescriptionInput
+                    isError={touched.description && errors.description}
+                    error={errors.description}
+                  />
 
-                    <TagsInput
-                      tagInput={tagInput}
-                      onTagChange={handleTagChange}
-                      onAddTag={handleAddTag}
-                      tags={values.tags}
-                      isError={errors.tags}
-                      error={errors.tags}
-                    />
+                  <TagsInput
+                    tagInput={tagInput}
+                    onTagChange={handleTagChange}
+                    onAddTag={handleAddTag}
+                    tags={values.tags}
+                    isError={errors.tags}
+                    error={errors.tags}
+                  />
 
-                    <FieldArray name="content" className="flex flex-col gap-4">
-                      {({ remove, push, swap }) => (
-                        <>
-                          {values.content.length > 0 && (
-                            <div className="flex flex-col gap-8">
-                              {values.content.map((content, index) => {
-                                if (content.type === "subtitle") {
-                                  return (
-                                    <SubtitleInput
-                                      key={index}
-                                      index={index}
-                                      canMoveUp={checkItemMoveUp(index)}
-                                      onMoveUp={() => moveItemUp(swap, index)}
-                                      canMoveDown={checkItemMoveDown(
-                                        index,
-                                        values.content.length
-                                      )}
-                                      onMoveDown={() =>
-                                        moveItemDown(swap, index)
-                                      }
-                                      onDelete={() => deleteItem(remove, index)}
-                                      isError={
-                                        errors.content &&
-                                        touched.content &&
-                                        errors.content[index]?.text &&
-                                        touched.content[index]?.text
-                                      }
-                                      error={errors.content?.[index]?.text}
-                                    />
-                                  );
-                                } else if (content.type === "text") {
-                                  return (
-                                    <TextInput
-                                      key={index}
-                                      index={index}
-                                      canMoveUp={checkItemMoveUp(index)}
-                                      onMoveUp={() => moveItemUp(swap, index)}
-                                      canMoveDown={checkItemMoveDown(
-                                        index,
-                                        values.content.length
-                                      )}
-                                      onMoveDown={() =>
-                                        moveItemDown(swap, index)
-                                      }
-                                      onDelete={() => deleteItem(remove, index)}
-                                      isError={
-                                        errors.content &&
-                                        touched.content &&
-                                        errors.content[index]?.text &&
-                                        touched.content[index]?.text
-                                      }
-                                      error={errors.content?.[index]?.text}
-                                    />
-                                  );
-                                } else if (content.type === "image") {
-                                  return (
-                                    <ImageInput
-                                      key={index}
-                                      index={index}
-                                      canMoveUp={checkItemMoveUp(index)}
-                                      onMoveUp={() => moveItemUp(swap, index)}
-                                      canMoveDown={checkItemMoveDown(
-                                        index,
-                                        values.content.length
-                                      )}
-                                      onMoveDown={() =>
-                                        moveItemDown(swap, index)
-                                      }
-                                      onDelete={() => deleteItem(remove, index)}
-                                      isError={
-                                        errors.content &&
-                                        touched.content &&
-                                        errors.content[index]?.text &&
-                                        touched.content[index]?.text
-                                      }
-                                      error={errors.content?.[index]?.text}
-                                    />
-                                  );
-                                } else if (content.type === "link") {
-                                  return (
-                                    <LinkInput
-                                      key={index}
-                                      index={index}
-                                      canMoveUp={checkItemMoveUp(index)}
-                                      onMoveUp={() => moveItemUp(swap, index)}
-                                      canMoveDown={checkItemMoveDown(
-                                        index,
-                                        values.content.length
-                                      )}
-                                      onMoveDown={() =>
-                                        moveItemDown(swap, index)
-                                      }
-                                      onDelete={() => deleteItem(remove, index)}
-                                      isError={
-                                        errors.content &&
-                                        touched.content &&
-                                        errors.content[index]?.text &&
-                                        touched.content[index]?.text
-                                      }
-                                      error={errors.content?.[index]?.text}
-                                    />
-                                  );
-                                }
+                  <FieldArray name="content" className="flex flex-col gap-4">
+                    {({ remove, push, swap }) => (
+                      <>
+                        {values.content.length > 0 && (
+                          <div className="flex flex-col gap-8">
+                            {values.content.map((content, index) => {
+                              if (content.type === "subtitle") {
+                                return (
+                                  <SubtitleInput
+                                    key={index}
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
+                                      touched.content &&
+                                      errors.content[index]?.text &&
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
+                                );
+                              } else if (content.type === "text") {
+                                return (
+                                  <TextInput
+                                    key={index}
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
+                                      touched.content &&
+                                      errors.content[index]?.text &&
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
+                                );
+                              } else if (content.type === "image") {
+                                return (
+                                  <ImageInput
+                                    key={index}
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
+                                      touched.content &&
+                                      errors.content[index]?.text &&
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
+                                );
+                              } else if (content.type === "link") {
+                                return (
+                                  <LinkInput
+                                    key={index}
+                                    index={index}
+                                    canMoveUp={checkItemMoveUp(index)}
+                                    onMoveUp={() => moveItemUp(swap, index)}
+                                    canMoveDown={checkItemMoveDown(
+                                      index,
+                                      values.content.length
+                                    )}
+                                    onMoveDown={() => moveItemDown(swap, index)}
+                                    onDelete={() => deleteItem(remove, index)}
+                                    isError={
+                                      errors.content &&
+                                      touched.content &&
+                                      errors.content[index]?.text &&
+                                      touched.content[index]?.text
+                                    }
+                                    error={errors.content?.[index]?.text}
+                                  />
+                                );
+                              }
 
-                                return "";
-                              })}
-                            </div>
-                          )}
-
-                          <div className="px-2 py-4 flex justify-between items-center bg-neutral-300 rounded-sm">
-                            <div className="flex items-center gap-5">
-                              <p className="text-base">Choose element</p>
-                              <select
-                                value={newInputType}
-                                onChange={handleNewInputType}
-                                className="px-2 rounded-sm"
-                              >
-                                <option value="subtitle">Subtitle</option>
-                                <option value="text">Text</option>
-                                <option value="image">Image</option>
-                                <option value="link">Link</option>
-                              </select>
-                              <DefaultButton
-                                onClick={() => handleAddInput(push)}
-                              >
-                                Add
-                              </DefaultButton>
-                            </div>
-                            <CreateButton type="submit" disabled={isLoading} />
+                              return "";
+                            })}
                           </div>
-                          {errMsg && <ErrorText>{errMsg}</ErrorText>}
-                        </>
-                      )}
-                    </FieldArray>
-                  </Form>
+                        )}
+
+                        <div className="px-2 py-4 flex justify-between items-center bg-neutral-300 rounded-sm">
+                          <div className="flex items-center gap-5">
+                            <p className="text-base">Choose element</p>
+                            <select
+                              value={newInputType}
+                              onChange={handleNewInputType}
+                              className="px-2 rounded-sm"
+                            >
+                              <option value="subtitle">Subtitle</option>
+                              <option value="text">Text</option>
+                              <option value="image">Image</option>
+                              <option value="link">Link</option>
+                            </select>
+                            <DefaultButton onClick={() => handleAddInput(push)}>
+                              Add
+                            </DefaultButton>
+                          </div>
+                          <CreateButton type="submit" disabled={isLoading} />
+                        </div>
+                        {errMsg && <ErrorText>{errMsg}</ErrorText>}
+                      </>
+                    )}
+                  </FieldArray>
+                </Form>
+              )}
+            </Formik>
+            {(formValues.title ||
+              formValues.tags.length > 0 ||
+              formValues.preview ||
+              formValues.description) && (
+              <div className="flex flex-col gap-10">
+                {formValues.title && (
+                  <h2 className="font-semibold text-3xl">{formValues.title}</h2>
                 )}
-              </Formik>
-              {(formValues.title ||
-                formValues.tags.length > 0 ||
-                formValues.preview ||
-                formValues.description) && (
-                <div className="flex flex-col gap-10">
-                  {formValues.title && (
-                    <h2 className="font-semibold text-3xl">
-                      {formValues.title}
-                    </h2>
-                  )}
-                  {formValues.tags.length > 0 && (
-                    <Tags tags={formValues.tags} />
-                  )}
+                {formValues.tags.length > 0 && <Tags tags={formValues.tags} />}
 
-                  {(formValues.preview || formValues.description) && (
-                    <div className="flex justify-between items-center gap-5">
-                      {formValues.preview && (
-                        <img
-                          src={formValues.preview}
-                          alt="preview"
-                          className="w-[500px] h-[300px] object-cover flex-shrink-0"
-                        />
-                      )}
+                {(formValues.preview || formValues.description) && (
+                  <div className="flex justify-between items-center gap-5">
+                    {formValues.preview && (
+                      <img
+                        src={formValues.preview}
+                        alt="preview"
+                        className="w-[500px] h-[300px] object-cover flex-shrink-0"
+                      />
+                    )}
 
-                      {formValues.description && (
-                        <p className="text-base font-medium">
-                          {formValues.description}
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
+                    {formValues.description && (
+                      <p className="text-base font-medium">
+                        {formValues.description}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
-              {formValues.content.length > 0 && (
-                <ToContent content={formValues.content} />
-              )}
-            </div>
+            {formValues.content.length > 0 && (
+              <ToContent content={formValues.content} />
+            )}
           </div>
-        </section>
+        </PageLayout>
       )}
-      <Sidebar />
     </>
   );
 };

@@ -13,6 +13,7 @@ import UserFollowings from "./features/user/UserFollowings";
 import UserLikedPosts from "./features/user/UserLikedPosts";
 import UserPosts from "./features/user/UserPosts";
 import MainPage from "./pages/MainPage";
+import LatestPosts from "./features/post/LatestPosts";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route index element={<MainPage />} />
 
         <Route path="posts">
+          <Route path="latest" element={<LatestPosts />} />
           <Route path=":id" element={<Post />} />
           <Route path="*" element={<RequireAuth />}>
             <Route path="create" element={<PostCreate />} />

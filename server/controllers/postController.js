@@ -35,23 +35,39 @@ const getAllPosts = catchAsync(async (req, res, next) => {
     .skip(skip)
     .limit(limit);
 
+  const count = await Post.countDocuments();
+
   res.status(200).json({
     status: "success",
-    data: posts,
+    data: {
+      posts: posts,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    },
   });
 });
 
 const getLatestPosts = catchAsync(async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
+  const page = parseInt(req.query.page) || 1;
+
+  const skip = (page - 1) * limit;
 
   const posts = await Post.find()
     .populate("user")
     .sort({ createdAt: -1 })
+    .skip(skip)
     .limit(limit);
+
+  const count = await Post.countDocuments();
 
   res.status(200).json({
     status: "success",
-    data: posts,
+    data: {
+      posts: posts,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    },
   });
 });
 
@@ -69,9 +85,15 @@ const getMostLikedPosts = catchAsync(async (req, res) => {
     .sort({ length: -1 })
     .limit(limit);
 
+  const count = await Post.countDocuments();
+
   res.status(200).json({
     status: "success",
-    data: posts,
+    data: {
+      posts: posts,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    },
   });
 });
 
