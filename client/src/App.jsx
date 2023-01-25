@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./features/auth/Login";
-import Register from "./features/auth/Register";
+import Signup from "./features/auth/Signup";
 import RequireAuth from "./features/auth/RequireAuth";
 import Post from "./features/post/Post";
 import PostCreate from "./features/post/PostCreate";
@@ -22,14 +22,14 @@ const App = () => {
 
         <Route path="posts">
           <Route path=":id" element={<Post />} />
-          <Route path="create" element={<RequireAuth />}>
-            <Route index element={<PostCreate />} />
+          <Route path="*" element={<RequireAuth />}>
+            <Route path="create" element={<PostCreate />} />
             <Route path=":id/edit" element={<PostEdit />} />
           </Route>
         </Route>
 
         <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+        <Route path="register" element={<Signup />} />
 
         <Route path="users/:id" element={<User />}>
           <Route index element={<UserPosts />} />

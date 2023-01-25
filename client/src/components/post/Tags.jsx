@@ -7,7 +7,7 @@ const Tags = (props) => {
       {props.tags.map((tag, index) => (
         <Link
           key={index}
-          to="/search?topic=tag"
+          to={`/search?topic=${tag}`}
           className="px-4 py-1 bg-gray-300 rounded-xl font-medium text-sm"
         >
           {tag}

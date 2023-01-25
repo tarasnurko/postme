@@ -4,13 +4,12 @@ import ToContent from "./ToContent";
 import { useCreatePostMutation } from "./postsApiSlice";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, FieldArray } from "formik";
-import PostSchema from "../../utils/validation/PostSchema";
+import postSchema from "../../utils/postSchema";
 
 import FormObserver from "../../components/utils/FormObserver";
 import Tags from "../../components/post/Tags";
 import Modal from "../../components/modal/Modal";
 
-// import TitleInput from "../../components/inputs/TitleInput";
 import {
   TitleInput,
   DescriptionInput,
@@ -24,6 +23,7 @@ import {
 
 import CreateButton from "../../components/common/buttons/CreateButton";
 import DefaultButton from "../../components/common/buttons/colors/DefaultButton";
+import ErrorText from "../../components/common/text/ErrorText";
 
 const initialValues = {
   title: "",
@@ -103,7 +103,7 @@ const PostCreate = () => {
           <div className="mt-8 flex flex-col gap-8">
             <Formik
               initialValues={initialValues}
-              validationSchema={PostSchema}
+              validationSchema={postSchema}
               onSubmit={handleOpenModal}
             >
               {({ values, errors, touched }) => (
@@ -252,11 +252,7 @@ const PostCreate = () => {
                           </div>
                           <CreateButton type="submit" disabled={isLoading} />
                         </div>
-                        {errMsg && (
-                          <p className="ml-2 mt-2 text-lg text-red-400">
-                            {errMsg}
-                          </p>
-                        )}
+                        {errMsg && <ErrorText>{errMsg}</ErrorText>}
                       </>
                     )}
                   </FieldArray>
