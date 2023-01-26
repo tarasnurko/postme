@@ -173,7 +173,15 @@ const getFollowingsPosts = catchAsync(async (req, res, next) => {
 
 const getPost = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const post = await Post.findById(id).populate("user").populate("comments");
+  const post = await Post.findById(id)
+    .populate("user")
+    .populate("comments")
+    .populate({
+      path: "comments",
+      populate: {
+        path: "user",
+      },
+    });
 
   if (!post) return next(new AppError("No post with that ID", 404));
 

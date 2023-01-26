@@ -3,30 +3,38 @@ import {
   HandThumbUpIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
+import { HandThumbUpIcon as HandThumbUpFilledIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import Spinner from "../../components/Spinner";
 import UserPreview from "../../components/user/UserPreview";
-import { useGetPostQuery } from "./postsApiSlice";
+import { useGetPostQuery, useTogglePostLikeMutation } from "./postsApiSlice";
 import ToContent from "./ToContent";
 import Tags from "../../components/post/Tags";
 import PostDate from "../../components/post/PostDate";
 import useAuth from "../../hooks/useAuth";
 import PageLayout from "../../components/PageLayout";
+import CommentsList from "../../components/comment/CommentsList";
 
 const Post = () => {
   const { id } = useParams();
-  const { data: post, isLoading } = useGetPostQuery(id);
-
   const { isAuthorized, userId, role } = useAuth();
+
+  const { data: post, isLoading } = useGetPostQuery(id);
+  const [togglePostLike, { isLoading: isLikeLoading }] =
+    useTogglePostLikeMutation();
 
   const checkCanEdit = () => {
     return isAuthorized && (userId === post.user._id || role === "admin");
   };
 
+  const handleLike = async () => {
+    await togglePostLike({ postId: id, userId });
+  };
+
   return (
-    <PageLayout sidebar={<Sidebar />}>
+    <PageLayout sidebar={<Sidebar />} gap={8}>
       {isLoading ? (
         <Spinner />
       ) : (
@@ -60,77 +68,24 @@ const Post = () => {
             {!isLoading && <ToContent content={post.content} />}
           </div>
           <div className="flex justify-start gap-8">
-            <div className="flex items-center gap-2 cursor-pointer">
-              <HandThumbUpIcon className="w-6 h-6" />
-              <p className="text-sm font-medium">200</p>
-            </div>
+            <button
+              className="flex items-center gap-2 cursor-pointer"
+              disabled={!isAuthorized || isLikeLoading}
+              onClick={handleLike}
+            >
+              {isAuthorized && post.likedBy.includes(userId) ? (
+                <HandThumbUpFilledIcon className="w-6 h-6" />
+              ) : (
+                <HandThumbUpIcon className="w-6 h-6" />
+              )}
+              <p className="text-sm font-medium">{post.likedBy.length}</p>
+            </button>
             <div className="flex items-center gap-2 cursor-pointer">
               <ChatBubbleBottomCenterTextIcon className="w-6 h-6" />
-              <p className="text-sm font-medium">200</p>
+              <p className="text-sm font-medium">{post.comments.length}</p>
             </div>
           </div>
-          <div className="flex flex-col gap-10">
-            <h2 className="font-semibold text-2xl">Comments</h2>
-            <div className="flex flex-col gap-10">
-              <div className="flex gap-5">
-                <div className="shrink-0 w-20 h-20 bg-gray-700 rounded-full"></div>
-                <div className="flex flex-col gap-2">
-                  <p className="text-xl font-medium">Username</p>
-                  <p className="text-base">
-                    There are many variations of passages of Lorem Ipsum
-                    available, but the majority have suffered alteration in some
-                    form, by injected humour, or randomised words which There
-                    are many variations of passages of Lorem Ipsum available,
-                  </p>
-                  <div className="mt-2 flex items-center gap-5">
-                    <div className="flex items-center gap-2 cursor-pointer">
-                      <HandThumbUpIcon className="w-6 h-6" />
-                      <p className="text-sm font-medium">200</p>
-                    </div>
-                    <p className="text-xs text-zinc-400">2 Month ago</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-5">
-                <div className="shrink-0 w-20 h-20 bg-gray-700 rounded-full"></div>
-                <div className="flex flex-col gap-2">
-                  <p className="text-xl font-medium">Username</p>
-                  <p className="text-base">
-                    There are many variations of passages of Lorem Ipsum
-                    available, but the majority have suffered alteration in some
-                    form, by injected humour, or randomised words which There
-                    are many variations of passages of Lorem Ipsum available,
-                  </p>
-                  <div className="mt-2 flex items-center gap-5">
-                    <div className="flex items-center gap-2 cursor-pointer">
-                      <HandThumbUpIcon className="w-6 h-6" />
-                      <p className="text-sm font-medium">200</p>
-                    </div>
-                    <p className="text-xs text-zinc-400">2 Month ago</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-5">
-                <div className="shrink-0 w-20 h-20 bg-gray-700 rounded-full"></div>
-                <div className="flex flex-col gap-2">
-                  <p className="text-xl font-medium">Username</p>
-                  <p className="text-base">
-                    There are many variations of passages of Lorem Ipsum
-                    available, but the majority have suffered alteration in some
-                    form, by injected humour, or randomised words which There
-                    are many variations of passages of Lorem Ipsum available,
-                  </p>
-                  <div className="mt-2 flex items-center gap-5">
-                    <div className="flex items-center gap-2 cursor-pointer">
-                      <HandThumbUpIcon className="w-6 h-6" />
-                      <p className="text-sm font-medium">200</p>
-                    </div>
-                    <p className="text-xs text-zinc-400">2 Month ago</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CommentsList comments={post.comments} />
         </>
       )}
     </PageLayout>

@@ -11,9 +11,10 @@ const router = express.Router();
 
 router.use(passport.authenticate("jwt", { session: false }));
 
+router.patch("/toggleLike/:id", toggleCommentLike);
+
 router.post("/:id", addComment);
 router.patch("/:id", updateComment);
 router.delete("/:id", deleteComment);
-router.get("/toggleLike/:id", toggleCommentLike);
 
 module.exports = router;

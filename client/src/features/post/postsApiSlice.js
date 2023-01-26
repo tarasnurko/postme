@@ -1,5 +1,6 @@
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
+import { current } from "@reduxjs/toolkit";
 
 export const postsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,6 +12,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           params: { limit, page, search, sort },
         };
       },
+      providesTags: [{ type: "Post", id: "LIST" }],
       transformResponse: (responseData) => {
         return responseData.data;
       },
@@ -18,18 +20,21 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     getLatestPosts: builder.query({
       query: ({ page = 1, limit = 10 }) =>
         `posts/latest?page=${page}&limit=${limit}`,
+      providesTags: [{ type: "Post", id: "LIST" }],
       transformResponse: (responseData) => {
         return responseData.data;
       },
     }),
     getMostLikedPosts: builder.query({
       query: (limit) => `posts/mostLiked?limit=${limit}`,
+      providesTags: [{ type: "Post", id: "LIST" }],
       transformResponse: (responseData) => {
         return responseData.data;
       },
     }),
     getPost: builder.query({
       query: (id) => `posts/${id}`,
+      providesTags: (result, error, id) => [{ type: "Post", id }],
       transformResponse: (responseData) => {
         return responseData.data;
       },
@@ -42,6 +47,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           ...data,
         },
       }),
+      invalidatesTags: [{ type: "Post", id: "LIST" }],
     }),
     updatePost: builder.mutation({
       query: ({ id, data }) => ({
@@ -51,6 +57,40 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           ...data,
         },
       }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
+    }),
+    togglePostLike: builder.mutation({
+      query: ({ postId }) => ({
+        url: `posts/toggleLike/${postId}`,
+        method: "PATCH",
+      }),
+      async onQueryStarted({ postId, userId }, { dispatch, queryFulfilled }) {
+        const result = dispatch(
+          postsApiSlice.util.updateQueryData("getPost", postId, (draft) => {
+            let post = current(draft);
+            let likedBy = [];
+
+            if (post.likedBy.includes(userId)) {
+              likedBy = post.likedBy.filter((item) => item !== userId);
+            } else {
+              likedBy = [...post.likedBy, userId];
+            }
+            return {
+              ...post,
+              likedBy,
+            };
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch {
+          result.undo();
+        }
+      },
+      invalidatesTags: (result, error, { postId }) => [
+        { type: "Post", id: postId },
+      ],
     }),
   }),
 });
@@ -62,4 +102,5 @@ export const {
   useGetPostQuery,
   useCreatePostMutation,
   useUpdatePostMutation,
+  useTogglePostLikeMutation,
 } = postsApiSlice;

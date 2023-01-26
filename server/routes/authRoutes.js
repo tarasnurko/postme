@@ -8,6 +8,6 @@ router.post("/signup", signup);
 router.post("/login", login);
 
 router.use(passport.authenticate("jwt", { session: false }));
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 module.exports = router;

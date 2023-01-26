@@ -30,6 +30,6 @@ router.post("/", createPost);
 router.patch("/:id", updatePost);
 router.delete("/:id", deletePost);
 
-router.get("/toggleLike/:id", togglePostLike);
+router.patch("/toggleLike/:id", togglePostLike);
 
 module.exports = router;

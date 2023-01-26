@@ -29,7 +29,7 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   deleteMe
 );
-router.get(
+router.patch(
   "/toggleFollowing/:id",
   passport.authenticate("jwt", { session: false }),
   toggleFollowing
