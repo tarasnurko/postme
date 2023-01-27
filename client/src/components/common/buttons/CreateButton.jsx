@@ -1,15 +1,15 @@
 import React from "react";
 import Button from "./Button";
 
-const CreateButton = (props) => {
+const CreateButton = ({ children, disabled, onClick }) => {
   return (
     <Button
       type="submit"
-      disabled={props.disabled}
-      onClick={props.onClick}
+      disabled={disabled}
+      onClick={onClick}
       className="bg-amber-500 hover:bg-amber-600"
     >
-      Create Post
+      {children}
     </Button>
   );
 };

@@ -1,8 +1,8 @@
 import React from "react";
 import Tags from "./Tags";
-import PostDate from "./PostDate";
 import { Link } from "react-router-dom";
 import UserPreview from "../user/UserPreview";
+import DateText from "../common/text/DateText";
 
 const PostPreview = (props) => {
   return (
@@ -17,7 +17,7 @@ const PostPreview = (props) => {
               followers={props.post.user.followers.length}
             />
           )}
-          <PostDate />
+          <DateText date={props.post.createdAt} />
         </div>
         <Link to={`/posts/${props.post._id}`} className="flex flex-col">
           <h3 className="font-bold text-xl">{props.post.title}</h3>

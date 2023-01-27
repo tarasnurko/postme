@@ -12,10 +12,10 @@ import UserPreview from "../../components/user/UserPreview";
 import { useGetPostQuery, useTogglePostLikeMutation } from "./postsApiSlice";
 import ToContent from "./ToContent";
 import Tags from "../../components/post/Tags";
-import PostDate from "../../components/post/PostDate";
 import useAuth from "../../hooks/useAuth";
 import PageLayout from "../../components/PageLayout";
 import CommentsList from "../../components/comment/CommentsList";
+import DateText from "../../components/common/text/DateText";
 
 const Post = () => {
   const { id } = useParams();
@@ -46,7 +46,7 @@ const Post = () => {
               username={post.user.username}
               followers={post.user.followers.length}
             />
-            <PostDate />
+            <DateText date={post.createdAt} />
             {checkCanEdit() && (
               <Link to={"edit"} className="w-6 h-6 ml-[auto] cursor-pointer">
                 <PencilSquareIcon className="" />
