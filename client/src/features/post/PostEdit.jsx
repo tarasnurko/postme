@@ -32,7 +32,7 @@ const PostEdit = () => {
   const navigate = useNavigate();
 
   const { data: post, isLoading } = useGetPostQuery(id);
-  const [updatePost, { isUpdating }] = useUpdatePostMutation();
+  const [updatePost] = useUpdatePostMutation();
 
   const [newInputType, setNewInputType] = useState("subtitle");
   const [tagInput, setTagInput] = useState("");
@@ -40,36 +40,28 @@ const PostEdit = () => {
   const [errMsg, setErrMsg] = useState("");
   const [modal, setModal] = useState(false);
 
-  const [initialValues, setInitialValues] = useState({
-    title: "",
-    preview: "",
-    description: "",
-    tags: [],
-    content: [],
-  });
+  const [initialValues, setInitialValues] = useState(null);
 
-  // useEffect(() => {
-  //   console.log("useEffect");
-  //   if (!isLoading && post)
-  //     setInitialValues({
-  //       title: post.title || "",
-  //       preview: post.preview || "",
-  //       description: post.description || "",
-  //       tags: post.tags || [],
-  //       content: post.content || [],
-  //     });
-  // }, [isLoading, post]);
-
-  const a = true;
+  useEffect(() => {
+    if (!isLoading && post && !initialValues) {
+      setInitialValues({
+        title: post.title || "",
+        preview: post.preview || "",
+        description: post.description || "",
+        tags: post.tags || [],
+        content: post.content || [],
+      });
+    }
+  }, [initialValues, isLoading, post]);
 
   const handleChangeForm = (values) => {
-    setFormValues(() => values);
+    setFormValues(values);
   };
 
   const handleSubmit = async () => {
     try {
-      await updatePost(formValues);
-      navigate("/");
+      await updatePost({ data: formValues, id });
+      navigate(`/posts/${id}`);
     } catch (err) {
       setErrMsg(err);
     }
@@ -111,12 +103,12 @@ const PostEdit = () => {
     <>
       {modal && (
         <Modal
-          type="create"
+          type="update"
           onClose={handleCloseModal}
           onConfirm={handleSubmit}
         />
       )}
-      {!isLoading && initialValues && a && (
+      {!isLoading && initialValues && (
         <PageLayout sidebar={<Sidebar />} gap={4}>
           <h1 className="font-semibold text-3xl">Create Post</h1>
           <div className="mt-8 flex flex-col gap-8">
@@ -269,7 +261,9 @@ const PostEdit = () => {
                               Add
                             </DefaultButton>
                           </div>
-                          <CreateButton type="submit" disabled={isLoading} />
+                          <CreateButton type="submit" disabled={isLoading}>
+                            Update Post
+                          </CreateButton>
                         </div>
                         {errMsg && <ErrorText>{errMsg}</ErrorText>}
                       </>
@@ -278,37 +272,42 @@ const PostEdit = () => {
                 </Form>
               )}
             </Formik>
-            {(formValues.title ||
-              formValues.tags.length > 0 ||
-              formValues.preview ||
-              formValues.description) && (
-              <div className="flex flex-col gap-10">
-                {formValues.title && (
-                  <h2 className="font-semibold text-3xl">{formValues.title}</h2>
-                )}
-                {formValues.tags.length > 0 && <Tags tags={formValues.tags} />}
+            {formValues &&
+              (formValues?.title ||
+                formValues?.tags.length > 0 ||
+                formValues?.preview ||
+                formValues?.description) && (
+                <div className="flex flex-col gap-10">
+                  {formValues?.title && (
+                    <h2 className="font-semibold text-3xl">
+                      {formValues.title}
+                    </h2>
+                  )}
+                  {formValues.tags.length > 0 && (
+                    <Tags tags={formValues.tags} />
+                  )}
 
-                {(formValues.preview || formValues.description) && (
-                  <div className="flex justify-between items-center gap-5">
-                    {formValues.preview && (
-                      <img
-                        src={formValues.preview}
-                        alt="preview"
-                        className="w-[500px] h-[300px] object-cover flex-shrink-0"
-                      />
-                    )}
+                  {(formValues.preview || formValues.description) && (
+                    <div className="flex justify-between items-center gap-5">
+                      {formValues.preview && (
+                        <img
+                          src={formValues.preview}
+                          alt="preview"
+                          className="w-[500px] h-[300px] object-cover flex-shrink-0"
+                        />
+                      )}
 
-                    {formValues.description && (
-                      <p className="text-base font-medium">
-                        {formValues.description}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
+                      {formValues.description && (
+                        <p className="text-base font-medium">
+                          {formValues.description}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
 
-            {formValues.content.length > 0 && (
+            {formValues?.content.length > 0 && (
               <ToContent content={formValues.content} />
             )}
           </div>

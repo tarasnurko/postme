@@ -13,10 +13,17 @@ const Backdrop = (props) => {
 };
 
 const ModalOverlay = (props) => {
-  const text = props.type === "create" ? "Do you want to create post?" : "";
+  const text =
+    props.type === "create"
+      ? "Do you want to create post?"
+      : props.type === "update"
+      ? "Do you want to update post?"
+      : "";
   const button =
     props.type === "create" ? (
       <SuccessButton onClick={props.onConfirm}>Create Post</SuccessButton>
+    ) : props.type === "update" ? (
+      <SuccessButton onClick={props.onConfirm}>Update Post</SuccessButton>
     ) : (
       ""
     );
