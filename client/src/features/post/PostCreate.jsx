@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Sidebar from "../../components/Sidebar";
 import ToContent from "./ToContent";
 import { useCreatePostMutation } from "./postsApiSlice";
 import { useNavigate } from "react-router-dom";
@@ -98,7 +97,7 @@ const PostCreate = () => {
           onConfirm={handleSubmit}
         />
       )}
-      <PageLayout sidebar={<Sidebar />} gap={4}>
+      <PageLayout gap={4}>
         <h1 className="font-semibold text-3xl">Create Post</h1>
         <div className="mt-8 flex flex-col gap-8">
           <Formik
@@ -250,7 +249,9 @@ const PostCreate = () => {
                             Add
                           </DefaultButton>
                         </div>
-                        <CreateButton type="submit" disabled={isLoading} />
+                        <CreateButton type="submit" disabled={isLoading}>
+                          Create Post
+                        </CreateButton>
                       </div>
                       {errMsg && <ErrorText>{errMsg}</ErrorText>}
                     </>

@@ -57,11 +57,19 @@ const getUserData = catchAsync(async (req, res, next) => {
         });
       break;
     case "posts":
-      user = await User.findById(id).select(data).populate({
-        path: data,
-        model: "Post",
-        select: "title description preview tags createdAt",
-      });
+      user = await User.findById(id)
+        .select(data)
+        .populate({
+          path: "posts",
+          model: "Post",
+          select: "id title description preview content tags createdAt user",
+
+          populate: {
+            path: "user",
+            select: "id username photo followers",
+          },
+        });
+
       break;
   }
 

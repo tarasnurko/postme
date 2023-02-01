@@ -7,6 +7,7 @@ const DefaultButton = (props) => {
       disabled={props.disabled}
       onClick={props.onClick}
       className={props.className}
+      type={props.type}
     >
       {props.children}
     </Button>

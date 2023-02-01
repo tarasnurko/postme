@@ -1,15 +1,12 @@
 import React from "react";
 
-const PageLayout = ({ children, sidebar, gap = 10 }) => {
+const PageLayout = ({ children, gap = 10 }) => {
   return (
-    <>
-      <section className="container h-full mx-auto px-20">
-        <div className={`w-[800px] h-full flex flex-col my-10 gap-${gap}`}>
-          {children}
-        </div>
-        {sidebar}
-      </section>
-    </>
+    <section
+      className={`w-full md:w-[700px] lg:w-[900px] h-full px-10 md:px-0  sm:mx-auto `}
+    >
+      <div className={`flex flex-col my-10 gap-${gap}`}>{children}</div>
+    </section>
   );
 };
 

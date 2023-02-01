@@ -31,7 +31,7 @@ const Login = () => {
       if (!err.status) {
         setErrMsg("No Server Response");
       } else if (err.status === 400) {
-        setErrMsg("Missing Username or Password");
+        setErrMsg("Missing Email or Password");
       } else if (err.status === 401) {
         setErrMsg("Unauthorized");
       } else {
@@ -45,12 +45,9 @@ const Login = () => {
 
   return (
     <div className="w-full h-[calc(100vh-60px)] flex justify-center items-center bg-orange-300">
-      <div className="w-[800px] h-[500px] flex rounded-2xl drop-shadow-lg bg-white">
+      <div className="w-full h-full sm:w-[650px] sm:h-[500px] md:w-[800px] md:h-[500px] flex flex-col sm:flex-row pt-10 sm:pt-0 gap-4 rounded-none sm:rounded-2xl drop-shadow-lg bg-white">
         <div className="flex flex-col flex-1 px-10 justify-center items-center gap-8">
           <h1 className="font-semibold text-4xl">Login</h1>
-          <div className="w-10 h-10 flex justify-center items-center border-2 border-neutral-800 rounded-full">
-            G
-          </div>
           <form
             className="w-full px-5 flex flex-col items-center gap-4"
             onSubmit={handleSubmit}
@@ -84,7 +81,7 @@ const Login = () => {
         </div>
         <div className="flex flex-col flex-1 px-10 justify-center items-center gap-6 bg-gradient-to-r from-emerald-200 to-emerald-500">
           <h2 className="font-medium text-3xl text-white">Signup</h2>
-          <p className="text-gray-600">
+          <p className="text-center text-gray-600">
             Sign up here if you don't have account
           </p>
           <Link

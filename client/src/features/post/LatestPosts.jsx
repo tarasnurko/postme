@@ -3,7 +3,6 @@ import { useState } from "react";
 import PageLayout from "../../components/PageLayout";
 import Pagination from "../../components/Pagination";
 import PostList from "../../components/post/PostList";
-import Sidebar from "../../components/Sidebar";
 import Spinner from "../../components/Spinner";
 import { useGetLatestPostsQuery } from "./postsApiSlice";
 
@@ -39,7 +38,7 @@ const LatestPosts = () => {
   };
 
   return (
-    <PageLayout sidebar={<Sidebar />}>
+    <PageLayout>
       <div className="flex flex-col gap-12">
         <h2 className="font-semibold text-3xl">Latest Posts</h2>
         {isLoading ? (

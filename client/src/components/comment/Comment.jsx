@@ -26,7 +26,7 @@ const Comment = ({ comment }) => {
     await deleteComment({ commentId: comment.id, postId });
   };
 
-  const disabled = isToggling || isDeleting;
+  const disabled = isToggling || isDeleting || !isAuthorized;
 
   return (
     <div className="flex gap-5">

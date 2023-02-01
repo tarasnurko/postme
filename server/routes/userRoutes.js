@@ -18,7 +18,8 @@ router.get("/info", getUserData);
 
 // router.use(passport.authenticate("jwt", { session: false }));
 
-// router.get("/me", getMe);
+router.get("/me", passport.authenticate("jwt", { session: false }), getMe);
+
 router.patch(
   "/updateMe",
   passport.authenticate("jwt", { session: false }),

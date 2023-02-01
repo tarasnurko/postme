@@ -25,7 +25,7 @@ const CommentsList = ({ comments }) => {
   return (
     <div className="flex flex-col gap-8">
       <h2 className="font-semibold text-2xl">Comments</h2>
-      <CreateComment />
+      {isAuthorized && <CreateComment />}
       {!comments || !comments?.length ? (
         <p>No comments yet</p>
       ) : (

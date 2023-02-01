@@ -43,7 +43,7 @@ const LinkInput = (props) => {
         maxLength={500}
       />
       <Field
-        className="w-[400px] px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
+        className="max-w-[400px] px-2 py-2 border-2 border-gray-600 rounded-md text-lg outline-none"
         name={`content[${props.index}].sub`}
         placeholder="Link text"
         maxLength={50}

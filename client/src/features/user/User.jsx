@@ -1,23 +1,46 @@
 import React from "react";
-import { Link, Outlet, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import FollowButton from "../../components/common/buttons/FollowButton";
 
 import PageLayout from "../../components/PageLayout";
-import Sidebar from "../../components/Sidebar";
 import useAuth from "../../hooks/useAuth";
-import { useGetUserQuery } from "./userApiSlice";
+import { useSendLogoutMutation } from "../auth/authApiSlice";
+import { useGetUserQuery, useToggleFollowMutation } from "./userApiSlice";
 
 const User = () => {
-  const { userId } = useAuth();
+  const { userId, isAuthorized } = useAuth();
   const { id } = useParams();
 
   const url = useLocation();
   const page = url.pathname.split("/");
+  const navigate = useNavigate();
 
   const { data: user, isLoading } = useGetUserQuery(id);
+  const [sendLogout] = useSendLogoutMutation();
+  const [toggleFollow, { isLoading: isTogglingFollow }] =
+    useToggleFollowMutation();
+
+  const handleLogout = async () => {
+    await sendLogout();
+    navigate("/login");
+  };
+
+  // console.log(user);
+
+  const handleToggleFollow = async () => {
+    await toggleFollow({ userId: id, followerId: userId });
+  };
+
+  const isFollower = (!isLoading && user.followers.includes(userId)) || false;
 
   return (
-    <PageLayout gap={4} sidebar={<Sidebar />}>
+    <PageLayout gap={4}>
       {!isLoading && user?.banner && (
         <img
           className="shrink-0 w-full h-[150px] object-cover"
@@ -40,10 +63,16 @@ const User = () => {
             </div>
           </div>
         )}
-        <FollowButton disabled={userId === id} />
+        {isAuthorized && userId !== id && (
+          <FollowButton
+            onClick={handleToggleFollow}
+            disabled={isTogglingFollow}
+            type={!isFollower ? "follow" : "unfollow"}
+          />
+        )}
       </div>
       <div className="mt-2 flex flex-col gap-10">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center flex-wrap gap-4 sm:gap-8">
           <Link
             to=""
             className={
@@ -84,6 +113,26 @@ const User = () => {
           >
             Followers
           </Link>
+          {isAuthorized && userId === id && (
+            <Link
+              to="edit"
+              className={
+                page?.[3] === "edit"
+                  ? "text-lg border-b-2 border-black cursor-pointer"
+                  : "text-lg text-gray-600 cursor-pointer"
+              }
+            >
+              Edit
+            </Link>
+          )}
+          {isAuthorized && userId === id && (
+            <button
+              className="text-lg text-gray-600 cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
       <Outlet />

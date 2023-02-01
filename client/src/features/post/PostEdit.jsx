@@ -23,7 +23,6 @@ import {
   LinkInput,
 } from "../../components/inputs";
 import ToContent from "./ToContent";
-import Sidebar from "../../components/Sidebar";
 import Tags from "../../components/post/Tags";
 import { useEffect } from "react";
 
@@ -109,8 +108,8 @@ const PostEdit = () => {
         />
       )}
       {!isLoading && initialValues && (
-        <PageLayout sidebar={<Sidebar />} gap={4}>
-          <h1 className="font-semibold text-3xl">Create Post</h1>
+        <PageLayout gap={4}>
+          <h1 className="font-semibold text-3xl">Edit Post</h1>
           <div className="mt-8 flex flex-col gap-8">
             <Formik
               initialValues={initialValues}
@@ -244,8 +243,8 @@ const PostEdit = () => {
                           </div>
                         )}
 
-                        <div className="px-2 py-4 flex justify-between items-center bg-neutral-300 rounded-sm">
-                          <div className="flex items-center gap-5">
+                        <div className="px-2 py-4 flex justify-between items-center gap-4 sm:gap-0 flex-wrap bg-neutral-300 rounded-sm">
+                          <div className="flex items-center flex-wrap gap-5">
                             <p className="text-base">Choose element</p>
                             <select
                               value={newInputType}
@@ -288,12 +287,12 @@ const PostEdit = () => {
                   )}
 
                   {(formValues.preview || formValues.description) && (
-                    <div className="flex justify-between items-center gap-5">
+                    <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-5">
                       {formValues.preview && (
                         <img
                           src={formValues.preview}
                           alt="preview"
-                          className="w-[500px] h-[300px] object-cover flex-shrink-0"
+                          className="w-full h-80 sm:w-[500px] sm:h-[300px] object-cover"
                         />
                       )}
 

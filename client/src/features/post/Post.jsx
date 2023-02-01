@@ -6,7 +6,6 @@ import {
 import { HandThumbUpIcon as HandThumbUpFilledIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import Sidebar from "../../components/Sidebar";
 import Spinner from "../../components/Spinner";
 import UserPreview from "../../components/user/UserPreview";
 import { useGetPostQuery, useTogglePostLikeMutation } from "./postsApiSlice";
@@ -34,7 +33,7 @@ const Post = () => {
   };
 
   return (
-    <PageLayout sidebar={<Sidebar />} gap={8}>
+    <PageLayout gap={8}>
       {isLoading ? (
         <Spinner />
       ) : (
@@ -56,11 +55,11 @@ const Post = () => {
           {post.tags.length > 0 && <Tags tags={post.tags} />}
           <div className="flex flex-col gap-10">
             <h1 className="font-semibold text-3xl">{post.title}</h1>
-            <div className="flex justify-between items-center gap-5">
+            <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-5">
               <img
                 src={post.preview}
                 alt="preview"
-                className="w-[500px] h-[300px] object-cover"
+                className="w-full h-80 sm:w-[500px] sm:h-[300px] object-cover"
               />
 
               <p className="text-base font-medium">{post.description}</p>

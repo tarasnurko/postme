@@ -18,12 +18,17 @@ const ModalOverlay = (props) => {
       ? "Do you want to create post?"
       : props.type === "update"
       ? "Do you want to update post?"
+      : props.type === "update-user"
+      ? "Do you want to update user?"
       : "";
+
   const button =
     props.type === "create" ? (
       <SuccessButton onClick={props.onConfirm}>Create Post</SuccessButton>
     ) : props.type === "update" ? (
       <SuccessButton onClick={props.onConfirm}>Update Post</SuccessButton>
+    ) : props.type === "update-user" ? (
+      <SuccessButton onClick={props.onConfirm}>Update User</SuccessButton>
     ) : (
       ""
     );

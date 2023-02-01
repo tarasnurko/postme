@@ -14,6 +14,7 @@ import UserLikedPosts from "./features/user/UserLikedPosts";
 import UserPosts from "./features/user/UserPosts";
 import MainPage from "./pages/MainPage";
 import LatestPosts from "./features/post/LatestPosts";
+import UserEdit from "./features/user/UserEdit";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="likedPosts" element={<UserLikedPosts />} />
           <Route path="followings" element={<UserFollowings />} />
           <Route path="followers" element={<UserFollowers />} />
+          <Route path="edit" element={<UserEdit />} />
         </Route>
       </Route>
     </Routes>

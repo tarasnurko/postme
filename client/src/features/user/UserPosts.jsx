@@ -15,7 +15,7 @@ const UserPosts = () => {
 
   return (
     <>
-      {isAuthorized && userId === id && (
+      {isAuthorized && userId === id && !isLoading && (
         <Link
           to="/posts/create"
           className="mt-4 flex justify-center items-center gap-2"
@@ -24,11 +24,7 @@ const UserPosts = () => {
           <PlusCircleIcon className="w-6 h-6" />
         </Link>
       )}
-      {isLoading && (
-        <div className="w-full flex justify-center">
-          <Spinner />
-        </div>
-      )}
+      {isLoading && <Spinner />}
       {!isLoading && data.posts.length > 0 && (
         <div className="mt-4 flex flex-col gap-8">
           <PostList posts={data.posts} />

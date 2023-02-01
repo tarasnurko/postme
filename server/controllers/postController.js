@@ -207,7 +207,7 @@ const createPost = catchAsync(async (req, res, next) => {
     user: req.user.id,
   });
 
-  user.posts.push(req.user.id);
+  user.posts.push(post.id);
 
   await user.save();
 
@@ -286,9 +286,6 @@ const togglePostLike = catchAsync(async (req, res, next) => {
   if (!post) {
     return next(new AppError("No post found with that ID", 404));
   }
-
-  console.log(post.likedBy);
-  console.log(req.user.id);
 
   if (post.likedBy.includes(req.user.id)) {
     const indexPost = post.likedBy.indexOf(req.user.id);

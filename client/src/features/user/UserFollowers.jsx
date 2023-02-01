@@ -11,11 +11,7 @@ const UserFollowers = () => {
 
   return (
     <>
-      {isLoading && (
-        <div className="w-full flex justify-center">
-          <Spinner />
-        </div>
-      )}
+      {isLoading && <Spinner />}
 
       {!isLoading && data.followers.length > 0 && (
         <div className="mt-6 grid auto-rows-[60px] grid-cols-3 gap-5">
