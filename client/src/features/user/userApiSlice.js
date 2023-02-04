@@ -46,8 +46,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
             const user = current(draft);
             let followers = [...user.followers];
 
-            console.log(user);
-
             if (user.followers.includes(followerId)) {
               followers = followers.filter(
                 (follower) => follower !== followerId

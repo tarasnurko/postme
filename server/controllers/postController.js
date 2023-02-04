@@ -73,6 +73,9 @@ const getLatestPosts = catchAsync(async (req, res) => {
 
 const getMostLikedPosts = catchAsync(async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
+  const page = parseInt(req.query.page) || 1;
+
+  const skip = (page - 1) * limit;
 
   const posts = await Post.aggregate()
     .addFields({ length: { $size: "$likedBy" } })
@@ -82,7 +85,9 @@ const getMostLikedPosts = catchAsync(async (req, res) => {
       foreignField: "_id",
       as: "user",
     })
+    .unwind({ path: "$user", preserveNullAndEmptyArrays: true })
     .sort({ length: -1 })
+    .skip(skip)
     .limit(limit);
 
   const count = await Post.countDocuments();

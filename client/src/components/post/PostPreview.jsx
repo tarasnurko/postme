@@ -11,7 +11,7 @@ const PostPreview = (props) => {
         <div className="flex justify-start items-center gap-4">
           {props.post.user && (
             <UserPreview
-              id={props.post?.user?.id}
+              id={props.post?.user?._id}
               photo={props.post?.user?.photo}
               username={props.post?.user?.username || "user"}
               followers={props.post?.user?.followers?.length || 0}

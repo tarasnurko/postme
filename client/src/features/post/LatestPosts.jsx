@@ -5,6 +5,7 @@ import Pagination from "../../components/Pagination";
 import PostList from "../../components/post/PostList";
 import Spinner from "../../components/Spinner";
 import { useGetLatestPostsQuery } from "./postsApiSlice";
+import { scrollToTop } from "../../utils/scrollToTop";
 
 const LatestPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,10 +13,6 @@ const LatestPosts = () => {
     page: currentPage,
     limit: 5,
   });
-
-  const scrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
 
   const handleNext = () => {
     console.log("dfd");

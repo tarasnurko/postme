@@ -15,6 +15,8 @@ import UserPosts from "./features/user/UserPosts";
 import MainPage from "./pages/MainPage";
 import LatestPosts from "./features/post/LatestPosts";
 import UserEdit from "./features/user/UserEdit";
+import Search from "./features/search/Search";
+import FollowingsPosts from "./features/post/FollowingsPosts";
 
 const App = () => {
   return (
@@ -24,6 +26,8 @@ const App = () => {
 
         <Route path="posts">
           <Route path="latest" element={<LatestPosts />} />
+          <Route path="popular" element={<LatestPosts />} />
+          <Route path="followings" element={<FollowingsPosts />} />
           <Route path=":id" element={<Post />} />
           <Route path="*" element={<RequireAuth />}>
             <Route path="create" element={<PostCreate />} />
@@ -41,6 +45,7 @@ const App = () => {
           <Route path="followers" element={<UserFollowers />} />
           <Route path="edit" element={<UserEdit />} />
         </Route>
+        <Route path="search" element={<Search />} />
       </Route>
     </Routes>
   );

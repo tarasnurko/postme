@@ -26,7 +26,18 @@ export const postsApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getMostLikedPosts: builder.query({
-      query: (limit) => `posts/mostLiked?limit=${limit}`,
+      query: ({ page = 1, limit = 10 }) =>
+        `posts/mostLiked?page=${page}&limit=${limit}`,
+      providesTags: [{ type: "Post", id: "LIST" }],
+      transformResponse: (responseData) => {
+        return responseData.data;
+      },
+    }),
+    getFollosingsPosts: builder.query({
+      query: (args) => ({
+        url: "posts/followings",
+        params: args,
+      }),
       providesTags: [{ type: "Post", id: "LIST" }],
       transformResponse: (responseData) => {
         return responseData.data;
@@ -99,6 +110,7 @@ export const {
   useGetAllPostsQuery,
   useGetLatestPostsQuery,
   useGetMostLikedPostsQuery,
+  useGetFollosingsPostsQuery,
   useGetPostQuery,
   useCreatePostMutation,
   useUpdatePostMutation,

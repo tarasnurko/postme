@@ -34,7 +34,7 @@ const Header = () => {
 
           <li>
             <Link
-              to="/"
+              to="/search"
               className="text-sm sm:text-base flex items-center gap-2 hover:underline"
             >
               <p>Search</p>

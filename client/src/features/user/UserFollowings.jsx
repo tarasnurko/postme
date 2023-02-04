@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
-import UserPreview from "../../components/user/UserPreview";
+import UserList from "../../components/user/UserList";
 import { useGetUserDataQuery } from "./userApiSlice";
 
 const UserFollowings = () => {
@@ -14,17 +14,7 @@ const UserFollowings = () => {
       {isLoading && <Spinner />}
 
       {!isLoading && data.followings.length > 0 && (
-        <div className="mt-6 grid auto-rows-[60px] grid-cols-3 gap-5">
-          {data.followings.map((following) => (
-            <UserPreview
-              key={following._id}
-              id={following._id}
-              photo={following.photo}
-              username={following.username}
-              followers={following.followers.length}
-            />
-          ))}
-        </div>
+        <UserList users={data.followings} />
       )}
 
       {!isLoading && data.followings.length === 0 && (

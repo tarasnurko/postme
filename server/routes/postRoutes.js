@@ -20,11 +20,15 @@ router.get("/", getAllPosts);
 router.get("/latest", getLatestPosts);
 router.get("/mostLiked", getMostLikedPosts);
 
+router.get(
+  "/followings",
+  passport.authenticate("jwt", { session: false }),
+  getFollowingsPosts
+);
+
 router.get("/:id", getPost);
 
 router.use(passport.authenticate("jwt", { session: false }));
-
-router.get("/followings", getFollowingsPosts);
 
 router.post("/", createPost);
 router.patch("/:id", updatePost);

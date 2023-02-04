@@ -31,8 +31,6 @@ const User = () => {
     navigate("/login");
   };
 
-  // console.log(user);
-
   const handleToggleFollow = async () => {
     await toggleFollow({ userId: id, followerId: userId });
   };
