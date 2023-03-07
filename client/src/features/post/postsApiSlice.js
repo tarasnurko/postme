@@ -33,7 +33,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         return responseData.data;
       },
     }),
-    getFollosingsPosts: builder.query({
+    getFollowingsPosts: builder.query({
       query: (args) => ({
         url: "posts/followings",
         params: args,
@@ -110,7 +110,7 @@ export const {
   useGetAllPostsQuery,
   useGetLatestPostsQuery,
   useGetMostLikedPostsQuery,
-  useGetFollosingsPostsQuery,
+  useGetFollowingsPostsQuery,
   useGetPostQuery,
   useCreatePostMutation,
   useUpdatePostMutation,

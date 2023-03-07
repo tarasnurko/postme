@@ -104,6 +104,9 @@ const getMostLikedPosts = catchAsync(async (req, res) => {
 
 const getFollowingsPosts = catchAsync(async (req, res, next) => {
   const limit = parseInt(req.query.limit) || 10;
+  const page = parseInt(req.query.page) || 1;
+
+  const skip = (page - 1) * limit;
 
   const posts = await User.aggregate([
     { $match: { _id: ObjectId(req.user.id) } },
@@ -118,7 +121,7 @@ const getFollowingsPosts = catchAsync(async (req, res, next) => {
     {
       $unwind: {
         path: "$followings",
-        preserveNullAndEmptyArrays: true,
+        preserveNullAndEmptyArrays: false,
       },
     },
     {
@@ -132,7 +135,7 @@ const getFollowingsPosts = catchAsync(async (req, res, next) => {
     {
       $unwind: {
         path: "$followings.posts",
-        preserveNullAndEmptyArrays: true,
+        preserveNullAndEmptyArrays: false,
       },
     },
     {
@@ -166,13 +169,55 @@ const getFollowingsPosts = catchAsync(async (req, res, next) => {
       $sort: { createdAt: -1 },
     },
     {
+      $skip: skip,
+    },
+    {
       $limit: limit,
+    },
+  ]);
+
+  const count = await User.aggregate([
+    { $match: { _id: ObjectId(req.user.id) } },
+    {
+      $lookup: {
+        from: "users",
+        localField: "followings",
+        foreignField: "_id",
+        as: "followings",
+      },
+    },
+    {
+      $unwind: {
+        path: "$followings",
+        preserveNullAndEmptyArrays: false,
+      },
+    },
+    {
+      $lookup: {
+        from: "posts",
+        localField: "followings.posts",
+        foreignField: "_id",
+        as: "followings.posts",
+      },
+    },
+    {
+      $unwind: {
+        path: "$followings.posts",
+        preserveNullAndEmptyArrays: false,
+      },
+    },
+    {
+      $count: "count",
     },
   ]);
 
   res.status(200).json({
     status: "success",
-    data: posts,
+    data: {
+      posts,
+      totalPages: Math.ceil(count[0].count / limit),
+      currentPage: page,
+    },
   });
 });
 

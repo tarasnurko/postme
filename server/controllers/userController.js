@@ -86,15 +86,18 @@ const getUserData = catchAsync(async (req, res, next) => {
 const getMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
-    data: req.user,
+    data: {
+      username: req.user.username,
+      _id: req.user._id,
+    },
   });
 });
-
+``;
 const getUser = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
   const user = await User.findById(id).select(
-    "username followers createdAt posts banner photo"
+    "username followers createdAt posts photo"
   );
 
   res.status(200).json({
